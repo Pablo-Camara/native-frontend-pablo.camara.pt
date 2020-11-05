@@ -13,8 +13,22 @@
 
   <link rel="stylesheet" href="assets/css/main.css"/>
   
+  <script type="text/javascript">
+
+    function animateName(){
+      var pabloCamara = document.getElementById('pablocamara');
+
+      var animationsToStart = pabloCamara.getElementsByTagName('div');
+      for(var i = 0; i < animationsToStart.length; i++){
+        animationsToStart[i].classList.replace('start','end');
+      }
+    }
+    
+
+  </script>
+
 </head>
-<body>
+<body onload="animateName()">
   
     
   <div id="top-section">
@@ -103,18 +117,6 @@
     
   <h3 style="text-align: center;">Coming soon..</h3>
 
-  <script type="text/javascript">
 
-    setTimeout(function(){
-      var pabloCamara = document.getElementById('pablocamara');
-
-      var animationsToStart = pabloCamara.getElementsByTagName('div');
-      for(var i = 0; i < animationsToStart.length; i++){
-        animationsToStart[i].classList.replace('start','end');
-      }
-    },100);
-    
-
-  </script>
 </body>
 </html>
