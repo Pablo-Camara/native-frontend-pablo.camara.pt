@@ -1,0 +1,1 @@
+lessc assets/less/*.less public/assets/css/*.css

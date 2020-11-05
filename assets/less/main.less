@@ -1,0 +1,982 @@
+html,body {
+    margin: 0;
+    padding: 0;
+}
+
+#top-section {
+    background: #00202B;
+    height: 120px;
+}
+
+#pablocamara {
+    text-align: center;
+    width: 320px;
+    height: 120px;
+    top: 10px;
+    margin: auto;
+    position: relative;
+
+    div  {
+        position: absolute;
+        background-color: #ffffff;
+    }
+
+    .loadLeftP {
+        width: 4px;
+        top: 10px;
+        left: 78px;
+        transition: height 1s;
+        transition-timing-function: ease-in;
+
+        &.start {
+            height: 0px;
+        }
+  
+        &.end {
+            height: 30px;
+        }
+        
+    }
+
+
+
+    .loadUpperP {
+        height: 4px;
+        top: 10px;
+        left: 82px;
+        transition: width 1s;
+        transition-timing-function: ease-out;
+
+        &.start {
+          width: 0px;
+        }
+
+        &.end {
+          width: 25px;
+        }
+    }
+
+    .loadLowerP {
+        height: 4px;
+        left: 78px;
+        transition: width 1s, top 1s;
+        transition-timing-function: ease-out;
+
+        &.start {
+          width: 0px;
+          top: 21px;
+        }
+        
+        &.end {
+          width: 25px;
+          top: 25px;
+        }
+    }
+
+    .loadRightP {
+
+        width: 4px;
+        left: 103px;
+        transition: height 1s, top 1s;
+        transition-timing-function: ease-out;
+
+        &.start {
+            height: 0px;
+            top: 25px;
+        }
+
+        &.end {
+            height: 15px;
+            top: 14px;
+        }
+      
+    }
+
+
+
+    /* First letter A */    
+    .loadLeftA {
+        width: 4px;
+        top: 10px;
+        left: 116px;
+        transition: height 1s;
+        transition-timing-function: ease-in;
+
+        &.start {
+          height: 0px;
+        }
+    
+        &.end {
+          height: 30px;
+        }
+    }
+    
+    .loadRightA {
+        width: 4px;
+        top: 10px;
+        left: 138px;
+        transition: height 1s;
+        transition-timing-function: ease-in;
+
+        &.start {
+          height: 0px;
+        }
+        
+        &.end {
+          height: 30px;
+        }
+    }
+    
+    .loadTopA {
+        width: 22px;
+        top: 10px;
+        left: 120px;
+        transition: height 1s;
+        transition-timing-function: ease-in;
+
+        &.start {  
+          height: 0px;
+        }
+        
+        &.end {
+          height: 4px;
+        }   
+    }
+    
+    .loadBottomA {
+        width: 22px;
+        top: 25px;
+        transition: height 1s, left 1s;
+        transition-timing-function: ease-in;
+
+        &.start {
+          height: 0px;
+          left: 142px;
+        }
+        
+        &.end {
+          height: 4px;
+          left: 120px;
+        }
+        
+    }
+
+
+
+    
+
+
+    
+
+      /* First letter B */
+      .loadLeftB {
+        transition: height 1s, width 1s;
+        transition-timing-function: ease-in;
+        top: 10px;
+        left: 149px;
+
+        &.start {
+          width: 0px;
+          height: 0px;
+          
+        }
+
+        &.end {
+          width: 4px;
+          height: 30px;
+        }
+      }
+
+      .loadTopB {
+        transition: width 1s;
+        transition-timing-function: ease-in;
+        height: 4px;
+        top: 10px;
+        left: 151px;
+
+        &.start {
+          width: 0px;
+        }
+
+        &.end {
+          width: 22px;
+        }
+      }
+
+      .loadMiddleB {
+        transition: width 1.5s, left 1.5s;
+        transition-timing-function: ease-out;
+        height: 4px;
+        top: 23px;
+
+        &.start {
+          width: 0px;
+          left: 10px;
+        }
+
+        &.end {
+          width: 22px;
+          left: 151px;
+        }
+
+      }
+
+      .loadBottomB {
+        transition: width 1s, height 1s;
+        transition-timing-function: ease-in;
+        top: 36px;
+        left: 151px;
+
+        &.start {
+          width: 0px;
+          height: 0px;
+        }
+
+        &.end {
+          width: 22px;
+          height: 4px;
+        }
+      }
+
+
+      .loadTopRightB {
+        transition: top 1s, height 1s;
+        transition-timing-function: ease-in;
+        transition-delay: 500ms;
+        width: 4px;
+        left: 172px;
+
+        &.start {
+          height: 0px;
+          top: 0px;
+        }
+
+        &.end {
+          height: 11px;
+          top: 12px;
+        }
+      }
+
+      .loadBottomRightB {
+        transition: top 1s, height 1s, width 1s;
+        transition-timing-function: ease-out;
+        transition-delay: 500ms;
+        left: 172px;
+
+        &.start {
+          width: 0px;
+          height: 0px;
+          top: 12px;
+        }
+
+        &.end {
+          width: 4px;
+          height: 11px;
+          top: 26px;
+        }
+        
+      }
+
+      /* First letter L */
+      .loadLeftL {
+        transition: top 2s, height 2s, opacity 2s;
+        transition-timing-function: ease-out;
+        width: 4px;
+        left: 184px;
+        
+        &.start {
+          height: 60px;
+          top: 60px;
+          opacity: 0
+        }
+
+        &.end {
+          height: 30px;
+          top: 10px;
+          opacity: 1
+        }
+        
+      }
+      .loadBottomL {
+        transition: width 1s, height 1s;
+        transition-timing-function: ease-out;
+        top: 36px;
+        left: 184px;
+
+        &.start {
+          width: 0px;
+          height: 0px;
+        }
+
+        &.end {
+          width: 25px;
+          height: 4px;
+        }
+
+      }
+  
+
+      
+      /* First letter O */
+      .loadLeftO {
+        transition: height 2s;
+        transition-timing-function: ease-out;
+        width: 4px;
+        top: 10px;
+        left: 217px;
+
+        &.start {
+          height: 0px;
+        }
+
+        &.end {
+          height: 30px;
+        }
+
+      }
+      .loadRightO {
+        transition: width 1s, left 1s;
+        transition-timing-function: ease-out;
+        height: 30px;
+        top: 10px;
+
+        &.start {
+          width: 0px;
+          left: 320px;
+        }
+
+        &.end {
+          width: 4px;
+          left: 238px;
+        }
+
+      }
+      .loadTopO {
+        transition: left 1s, opacity 1s;
+        transition-timing-function: ease-out;
+        width: 25px;
+        height: 4px;
+        top: 10px;
+
+        &.start {
+          left: 120px;
+          opacity: 0
+        }
+
+        &.end {
+          left: 217px;
+          opacity: 1
+        }
+        
+      }
+
+      .loadBottomO {
+        transition: width 1s, left 1s;
+        transition-timing-function: ease-out;
+        height: 4px;
+        top: 36px;
+
+        &.start {
+          width: 0px;
+          left: 238px;
+        }
+
+        &.end {
+          width: 25px;
+          left: 217px;
+        }
+        
+      }
+
+
+      /* First letter C */
+      .loadLeftC {
+        transition: width 1.2s, left 1.2s;
+        transition-timing-function: ease-out;
+        height: 30px;
+        top: 50px;
+
+        &.start {
+          width: 0px;
+          left: 0px;
+        }
+
+        &.end {
+          width: 4px;
+          left: 55px;
+        }
+        
+      }
+
+      .loadTopC {
+        transition: width 1.2s, opacity 1.2s;
+        transition-timing-function: ease-out;
+        height: 4px;
+        top: 50px;
+        left: 59px;
+
+        &.start {
+          width: 251px;
+          opacity: 0
+        }
+
+        &.end {
+          width: 25px;
+          opacity: 1
+        }
+       
+      }
+      .loadBottomC {
+        transition: width 1.2s, opacity 1.2s;
+        transition-timing-function: ease-out;
+        height: 4px;
+        top: 76px;
+        left: 59px;
+
+
+        &.start {
+          width: 251px;
+          opacity: 0
+        }
+
+        &.end {
+          width: 25px;
+          opacity: 1
+        }
+        
+      }
+
+    /* Second letter A */  
+    .loadLeftA2 {
+        transition: height 1s;
+        transition-timing-function: ease-in;
+        width: 4px;
+        top: 50px;
+        left: 92px;
+
+        &.start {
+            height: 0px;
+        }
+
+        &.end {
+            height: 30px;
+        }
+      
+    }
+    .loadRightA2 {
+        transition: height 1s, opacity 1s;
+        transition-timing-function: ease-in;
+        width: 4px;
+        top: 50px;
+        left: 114px;
+
+        &.start {
+            height: 80px;
+            opacity: 0
+        }
+
+        &.end {
+            height: 30px;
+            opacity: 1
+        }
+    }
+    .loadTopA2 {
+        transition: height 1s;
+        transition-timing-function: ease-in;
+        width: 22px;
+        top: 50px;
+        left: 96px;
+        &.start {
+            height: 0px;
+        }
+
+        &.end {
+            height: 4px;
+        }
+      
+    }
+    .loadBottomA2 {
+        transition: height 1.5s, left 1.5s;
+        transition-timing-function: ease-out;
+        width: 22px;
+        top: 65px;
+
+        &.start {
+            height: 0px;
+            left: 58px;
+        }
+
+        &.end {
+            height: 4px;
+            left: 96px;
+        }
+      
+    }
+
+    /* First letter M */  
+    .loadLeftM {
+        transition: height 1s, width 1s;
+        transition-timing-function: ease-in;
+        top: 50px;
+        left: 128px;
+
+        &.start {
+            width: 0px;
+            height: 0px;
+        }
+
+        &.end {
+            width: 4px;
+            height: 30px;
+        }
+    }
+
+    .loadMiddleM1 {
+        transition: height 1s;
+        transition-timing-function: ease-in;
+        transition-delay: 300ms;
+        width: 4px;
+        top: 50px;
+        left: 132px;
+
+        &.start {
+            height: 0px;
+        }
+
+        &.end {
+            height: 4px;
+        }
+      
+    }
+
+    .loadMiddleM2 {
+        transition: height 1s;
+        transition-timing-function: ease-in;
+        transition-delay: 500ms;
+        width: 4px;
+        top: 54px;
+        left: 136px;
+
+        &.start {
+            height: 0px;
+        }
+        &.end {
+            height: 4px;
+        }
+
+    }
+
+    .loadMiddleM3 {
+        transition: height 1s;
+        transition-timing-function: ease-in;
+        transition-delay: 600ms;
+        width: 4px;
+        top: 58px;
+        left: 140px;
+
+        &.start {
+            height: 0px;
+        }
+        &.end {
+            height: 4px;
+        }
+     
+    }
+
+    .loadMiddleM4 {
+        transition: height 1s;
+        transition-timing-function: ease-in;
+        transition-delay: 700ms;
+        width: 4px;
+        top: 54px;
+        left: 144px;
+
+        &.start {
+            height: 0px;
+        }
+
+        &.end {
+            height: 4px;
+        }
+      
+    }
+
+    .loadMiddleM5 {
+        transition: height 1s;
+        transition-timing-function: ease-in;
+        transition-delay: 900ms;
+        width: 4px;
+        top: 50px;
+        left: 148px;
+
+        &.start {
+            height: 0px;
+        }
+        &.end {
+            height: 4px;
+        }
+     
+    }
+
+    .loadRightM {
+        transition: width 1.4s, height 1.4s;
+        transition-timing-function: ease-in;
+        transition-delay: 500ms;
+        top: 50px;
+        left: 152px;
+
+        &.start {
+            width: 0px;
+            height: 0px;
+        }
+        &.end {
+            width: 4px;
+            height: 40px;
+        }
+      
+    }
+
+    /* Third letter A */  
+    .loadLeftA3 {
+        transition: height 1s;
+        transition-timing-function: ease-in;
+        width: 4px;
+        top: 50px;
+        left: 164px;
+
+        &.start {
+            height: 0px;
+        }
+
+        &.end {
+            height: 30px;
+        }
+      
+    }
+    .loadRightA3 {
+        transition: height 1s;
+        transition-timing-function: ease-in;
+        width: 4px;
+        top: 50px;
+        left: 186px;
+
+        &.start {
+            height: 0px;
+        }
+        &.end {
+            height: 30px;
+        }
+      
+    }
+    .loadTopA3 {
+        transition: height 1s, left 1s;
+        transition-timing-function: ease-in;
+        width: 22px;
+        top: 50px;
+
+        &.start {
+            height: 0px;
+            left: 100px;
+        }
+        &.end {
+            height: 4px;
+            left: 168px;
+        }
+      
+    }
+
+    .loadBottomA3 {
+        transition: width 1.5s;
+        transition-timing-function: ease-out;
+        height: 4px;
+        top: 65px;
+        left: 168px;
+
+        &.start {
+            width: 0px;
+        }
+        &.end {
+            width: 22px;
+        }
+        
+    }
+
+    /* First letter R */  
+    .loadLeftR {
+        transition: width 1s, opacity 1s;
+        transition-timing-function: ease-in;
+        height: 30px;
+        top: 50px;
+        left: 198px;
+
+        &.start {
+            width: 30px;
+            opacity: 0
+        }
+        &.end {
+            width: 4px;
+            opacity: 1
+        }
+    }
+
+    .loadUpperR {
+        transition: height 1s, opacity 1s;
+        transition-timing-function: ease-in;
+        width: 25px;
+        top: 50px;
+        left: 202px;
+
+        &.start {
+            height: 30px;
+            opacity: 0
+        }
+        &.end {
+            height: 4px;
+            opacity: 1
+        }
+      
+    }
+
+    .loadMiddleR {
+        transition: height 1s, opacity 1s;
+        transition-timing-function: ease-in;
+        width: 25px;
+        top: 65px;
+        left: 202px;
+
+        &.start {
+            height: 30px;
+            opacity: 0
+        }
+        &.end {
+            height: 4px;
+            opacity: 1
+        }
+    }
+
+    .loadTopRightR {
+        transition: height 1s, width 1s, opacity 1s;
+        transition-timing-function: ease-out;
+        top: 54px;
+        left: 223px;
+
+        &.start {
+            width: 0px;
+            height: 0px;
+            opacity: 0
+        }
+        &.end {
+            width: 4px;
+            height: 15px;
+            opacity: 1
+        }
+      
+    }
+
+    .loadBottomRightR1 {
+        transition: opacity 1s;
+        transition-timing-function: ease-out;
+        transition-delay: 1s;
+        width: 4px;
+        height: 4px;
+        top: 69px;
+        left: 214px;
+
+        &.start {
+            opacity: 0
+        }
+        &.end {
+            opacity: 1
+        }
+    }
+
+    .loadBottomRightR2 {
+        transition: opacity 1s;
+        transition-timing-function: ease-out;
+        transition-delay: 1.2s;
+        width: 4px;
+        height: 4px;
+        top: 73px;
+        left: 218px;
+
+        &.start {
+            opacity: 0
+        }
+        &.end {
+            opacity: 1
+        }
+    }
+
+    .loadBottomRightR3 {
+        transition: opacity 1s;
+        transition-timing-function: ease-out;
+        transition-delay: 1.4s;
+        width: 4px;
+        height: 4px;
+        top: 77px;
+        left: 222px;
+
+        &.start {
+            opacity: 0
+        }
+        &.end {
+            opacity: 1
+        }
+    
+    }
+
+    /* Fourth letter A */  
+    .loadLeftA4 {
+        transition: opacity 1s, height 1s;
+        transition-timing-function: ease-in;
+        width: 4px;
+        top: 50px;
+        left: 236px;
+
+        &.start {
+            height: 80px;
+            opacity: 0
+        }
+        &.end {
+            height: 30px;
+            opacity: 1
+        }
+        
+    }
+
+    .loadRightA4 {
+        transition: height 1s;
+        transition-timing-function: ease-out;
+        width: 4px;
+        top: 50px;
+        left: 258px;
+
+        &.start {
+            height: 0px;
+        }
+        &.end {
+            height: 30px;
+        }
+    }
+
+    .loadTopA4 {
+        transition: height 1s;
+        transition-timing-function: ease-in;
+        width: 22px;
+        top: 50px;
+        left: 240px;
+
+        &.start {
+            height: 0px;
+        }
+        &.end {
+            height: 4px;
+        }
+    }
+
+    .loadBottomA4 {
+        transition: width 1.8s;
+        transition-timing-function: ease-out;
+        height: 4px;
+        top: 65px;
+        left: 240px;
+
+        &.start {
+            width: 0px;
+        }
+        &.end {
+            width: 22px;
+        }
+    }
+
+    /* A hat */
+    .loadA2Hat1 {
+        transition: opacity 1s;
+        transition-timing-function: ease-out;
+        transition-delay: 1.4s;
+        width: 4px;
+        height: 4px;
+        top: 44px;
+        left: 96px;
+
+        &.start {
+            opacity: 0
+        }
+        &.end {
+            opacity: 1
+        }
+      
+    }
+
+    .loadA2Hat2 {
+        transition: opacity 1s;
+        transition-timing-function: ease-out;
+        transition-delay: 1.5s;
+        width: 4px;
+        height: 4px;
+        top: 40px;
+        left: 100px;
+
+        &.start {
+            opacity: 0
+        }
+        &.end {
+            opacity: 1
+        }
+    }
+
+    .loadA2Hat3 {
+        transition: opacity 1s;
+        transition-timing-function: ease-out;
+        transition-delay: 1.6s;
+        width: 4px;
+        height: 4px;
+        top: 36px;
+        left: 104px;
+
+        &.start {
+            opacity: 0
+        }
+        &.end {
+            opacity: 1
+        }
+    }
+
+    .loadA2Hat4 {
+        transition: opacity 1s;
+        transition-timing-function: ease-out;
+        transition-delay: 1.7s;
+        width: 4px;
+        height: 4px;
+        top: 40px;
+        left: 108px;
+
+        &.start {
+            opacity: 0
+        }
+
+        &.end {
+            opacity: 1
+        }
+      
+    }
+
+    .loadA2Hat5 {
+        transition: opacity 1s;
+        transition-timing-function: ease-out;
+        transition-delay: 1.8s;
+        width: 4px;
+        height: 4px;
+        top: 44px;
+        left: 111px;
+
+        &.start {
+            opacity: 0
+        }
+        &.end {
+            opacity: 1
+        }
+    }
+}
+
+
