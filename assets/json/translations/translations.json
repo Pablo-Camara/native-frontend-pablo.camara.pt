@@ -3,5 +3,20 @@
         "pt": "Seja bem-vindo!",
         "en": "Welcome!",
         "es": "Bienvenido!"
+    },
+    "biography": {
+        "pt": "Biografia",
+        "en": "Biography",
+        "es": "Biografía"
+    },
+    "projects": {
+        "pt": "Projetos",
+        "en": "Projects",
+        "es": "Proyectos"
+    },
+    "services": {
+        "pt": "Serviços",
+        "en": "Services",
+        "es": "Servicios"
     }
 }
