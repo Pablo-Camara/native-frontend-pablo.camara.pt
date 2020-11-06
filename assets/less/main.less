@@ -998,11 +998,12 @@ html,body {
         opacity: 0;
         transition: opacity 1s; 
         transition-timing-function: ease-out;
+        
       }
 
       &.end {
         opacity: 1;
-        transition: opacity 2s;
+        transition: opacity 4s;
         transition-timing-function: ease-in;
       }
   }
@@ -1420,16 +1421,15 @@ html,body {
     cursor: pointer;
     
     background: #00202b;
-    
-    margin: auto;
     height: 250px;
+    margin: auto;
     margin-bottom: 10px;
-
     transition: width 1.4s;
     transition-timing-function: ease-out;
 
     &.start {
       width: 0px;
+      transition-delay: 1.5s;
     }
 
     &.end {
@@ -1446,7 +1446,7 @@ html,body {
         transition: opacity 2s, width 1.2s;
 
         &.start {
-          width: 0;
+          
           opacity: 0;
         }
 
@@ -1472,7 +1472,7 @@ html,body {
       &.end {
         opacity: 1;
         transition: opacity 2s;
-        transition-delay: 3.5s;
+        transition-delay: 3s;
       }
     }
   }

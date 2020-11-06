@@ -816,7 +816,7 @@ body {
 }
 #welcome-bar .welcome-string.end {
   opacity: 1;
-  transition: opacity 2s;
+  transition: opacity 4s;
   transition-timing-function: ease-in;
 }
 #welcome-bar #language-toggle-flag {
@@ -1132,14 +1132,15 @@ body {
   cursor: hand;
   cursor: pointer;
   background: #00202b;
-  margin: auto;
   height: 250px;
+  margin: auto;
   margin-bottom: 10px;
   transition: width 1.4s;
   transition-timing-function: ease-out;
 }
 #section-list .section-item.start {
   width: 0px;
+  transition-delay: 1.5s;
 }
 #section-list .section-item.end {
   transition-delay: 1.2s;
@@ -1154,7 +1155,6 @@ body {
   transition: opacity 2s, width 1.2s;
 }
 #section-list .section-item .image img.start {
-  width: 0;
   opacity: 0;
 }
 #section-list .section-item .image img.end {
@@ -1175,5 +1175,5 @@ body {
 #section-list .section-item .name.end {
   opacity: 1;
   transition: opacity 2s;
-  transition-delay: 3.5s;
+  transition-delay: 3s;
 }
