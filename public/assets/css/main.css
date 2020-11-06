@@ -860,51 +860,7 @@ body {
 }
 #language-selector #lang-copyright.load-copyright.end {
   opacity: 1;
-  transition-delay: 3.8;
-}
-#language-selector .language {
-  /* transitions: */
-  /* .load-welcome-msg {
-        &.start {
-          opacity: 0;
-          transition: opacity 2s;
-          transition-timing-function: ease-in;
-        }
-        
-        &.end {
-          opacity: 1;
-          transition: opacity 1s;
-          transition-timing-function: ease-out;
-        }
-      }
-    
-      .load-section-1 {
-          &.start {
-            opacity: 0;
-            transition: opacity 2s;
-            transition-timing-function: ease-in;
-          }
-          
-          &.end {
-            opacity: 1;
-            transition: opacity 1s;
-            transition-timing-function: ease-out;
-          }
-      } */
-  /* .load-language-toggle-flag {
-        
-        &.start {
-          opacity: 0;
-          transition: opacity 1s;
-          transition-timing-function: ease-in;
-        }
-        
-        &.end {
-          opacity: 1;
-          transition: opacity 1s;
-          transition-timing-function: ease-out;
-        }
-      } */
+  transition-delay: 3.8s;
 }
 #language-selector .language .flag img {
   width: 30px;
