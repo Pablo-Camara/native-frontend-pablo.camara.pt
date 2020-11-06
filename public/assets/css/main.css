@@ -795,20 +795,53 @@ body {
 #pablocamara .loadA2Hat5.end {
   opacity: 1;
 }
-#language-selector {
+#welcome-bar {
+  height: 30px;
+  position: absolute;
+  width: 100%;
+}
+#welcome-bar .container {
   width: 320px;
   margin: auto;
   position: relative;
 }
-#language-selector .welcome-string {
+#welcome-bar .welcome-string {
   padding: 4px 0;
   color: #00202b;
 }
-#language-selector #language-toggle-flag {
+#welcome-bar .welcome-string.start {
+  opacity: 0;
+  transition: opacity 1s;
+  transition-timing-function: ease-out;
+}
+#welcome-bar .welcome-string.end {
+  opacity: 1;
+  transition: opacity 2s;
+  transition-timing-function: ease-in;
+}
+#welcome-bar #language-toggle-flag {
   width: 30px;
   position: absolute;
   right: 5px;
   top: 4px;
+  cursor: hand;
+  cursor: pointer;
+}
+#welcome-bar #language-toggle-flag.load-language-toggle-flag {
+  transition: opacity 2.3s;
+}
+#welcome-bar #language-toggle-flag.load-language-toggle-flag.start {
+  opacity: 0;
+  transition-timing-function: ease-out;
+}
+#welcome-bar #language-toggle-flag.load-language-toggle-flag.end {
+  opacity: 1;
+  transition-timing-function: ease-out;
+}
+#language-selector {
+  width: 320px;
+  margin: auto;
+  position: relative;
 }
 #language-selector #lang-copyright {
   text-align: center;

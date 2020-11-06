@@ -15,12 +15,15 @@
   
   <script type="text/javascript">
 
-    function toggleClassFromChildren(element,childrenTagName,oldClass,newClass){
+    window.lang = null;
+
+    function toggleClassFromChildren(element,childrenTagName,oldClass,newClass,extraOptions){
       var childrenToChange = element.getElementsByTagName(childrenTagName);
       for(var i = 0; i < childrenToChange.length; i++){
         childrenToChange[i].classList.replace(oldClass,newClass);
       }
     }
+
     function animateName(){
       var pabloCamara = document.getElementById('pablocamara');
       toggleClassFromChildren(pabloCamara,'div','start','end');
@@ -35,13 +38,57 @@
       toggleClassFromChildren(languageSelector,'img',oldClass,newClass);
     }
 
+    function animateWelcomeBar(show){
+      var welcomeBar = document.getElementById('welcome-bar');
+
+      var oldClass = show ? 'start' : 'end';
+      var newClass = !show ? 'start' : 'end';
+
+      toggleClassFromChildren(welcomeBar,'div',oldClass,newClass);
+      toggleClassFromChildren(welcomeBar,'img',oldClass,newClass);
+    }
+
     function loadAnimations(){
       animateName();
       animateLanguageSelection(true);
     }
 
+    function translateStrings(lang){
+      getTranslations(lang,function(){
+        var contentToTranslate = document.getElementsByClassName('dts');
+        for(var i = 0; i < contentToTranslate.length; i++){
+          var stringId = contentToTranslate[i].getAttribute('data-dts-id')
+          contentToTranslate[i].innerHTML = window.translationStrings[stringId];
+        }
+      });
+    }
+
+    function getTranslations(lang,callback){
+      var xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+
+        if (xhr.status >= 200 && xhr.status < 300) {
+          // What do when the request is successful
+          window.translationStrings = JSON.parse(xhr.response);
+          callback();
+        } 
+      
+      };
+      xhr.open('GET', 'assets/json/translations_' + lang + '.json');
+      xhr.send();
+    }
+
+    
+
     function setLang(lang){
+      window.lang = lang;
+      var toggleFlag = document.getElementById('language-toggle-flag');
+      toggleFlag.setAttribute('src','assets/img/flags/flag-' + window.lang + '.png');
+      
+      translateStrings(lang);
       animateLanguageSelection(false);
+      animateWelcomeBar(true);
+      
     }
   </script>
 
@@ -135,8 +182,17 @@
     
   
   
+
+  <div id="welcome-bar">
+    <div class="container">
+      <div class="welcome-string start dts" data-dts-id="welcome-string"></div>
+      <img id="language-toggle-flag" class="load-language-toggle-flag start"/>
+    </div>
+  </div>
+
   <div id="language-selector">
-    
+      
+
       <div class="language first-item" onClick="setLang('pt')">
           <div class="v-connector load-pt-v-conn start"></div>
           <div class="h-connector load-pt-h-conn start"></div>

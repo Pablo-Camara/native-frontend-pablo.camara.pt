@@ -979,23 +979,63 @@ html,body {
     }
 }
 
+#welcome-bar {
+  height: 30px;
+  position: absolute;
+  width: 100%;
 
-#language-selector {
-  width: 320px;
-  margin: auto;
-  position: relative;
+  .container {
+    width: 320px;
+    margin: auto;
+    position: relative;
+  }
 
   .welcome-string {
       padding: 4px 0;
       color: #00202b;
+
+      &.start {
+        opacity: 0;
+        transition: opacity 1s; 
+        transition-timing-function: ease-out;
+      }
+
+      &.end {
+        opacity: 1;
+        transition: opacity 2s;
+        transition-timing-function: ease-in;
+      }
   }
-  
+
   #language-toggle-flag {
       width: 30px;
       position: absolute;
       right: 5px;
       top: 4px;
+      cursor: hand;
+      cursor: pointer;
+
+      &.load-language-toggle-flag {
+        transition: opacity 2.3s;
+
+        &.start {
+          opacity: 0;  
+          transition-timing-function: ease-out;
+        }
+
+        &.end {
+          opacity: 1;
+          transition-timing-function: ease-out;
+        }
+
+      }
   }
+}
+
+#language-selector {
+  width: 320px;
+  margin: auto;
+  position: relative;
 
   #lang-copyright {
       text-align: center;
