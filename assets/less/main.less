@@ -985,7 +985,7 @@ html,body {
   width: 100%;
 
   .container {
-    width: 320px;
+    width: 300px;
     margin: auto;
     position: relative;
   }
@@ -1010,7 +1010,7 @@ html,body {
   #language-toggle-flag {
       width: 30px;
       position: absolute;
-      right: 5px;
+      right: 0px;
       top: 4px;
       cursor: hand;
       cursor: pointer;
@@ -1408,4 +1408,72 @@ html,body {
       
   }
 
+}
+
+#section-list {
+  width: 320px;
+  margin: auto;
+  margin-top: 32px;
+
+  .section-item {
+    cursor: hand;
+    cursor: pointer;
+    
+    background: #00202b;
+    
+    margin: auto;
+    height: 250px;
+    margin-bottom: 10px;
+
+    transition: width 1.4s;
+    transition-timing-function: ease-out;
+
+    &.start {
+      width: 0px;
+    }
+
+    &.end {
+      transition-delay: 1.2s;
+      width: 300px;
+    }
+
+    .image {
+      width: 153px;
+      margin: auto;
+      padding-top: 20px;
+      
+      img {
+        transition: opacity 2s, width 1.2s;
+
+        &.start {
+          width: 0;
+          opacity: 0;
+        }
+
+        &.end {
+          transition-delay: 2.2s;
+          width: 153px;
+          opacity: 1;
+        }
+      }
+    }
+
+    .name {
+      color: #fff;
+      font-size: 29px;
+      text-align: center;
+      margin-top: 10px;
+
+      &.start {
+        opacity: 0;
+        transition: opacity 1s;
+      }
+
+      &.end {
+        opacity: 1;
+        transition: opacity 2s;
+        transition-delay: 3.5s;
+      }
+    }
+  }
 }

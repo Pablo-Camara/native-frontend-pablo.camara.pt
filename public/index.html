@@ -17,27 +17,19 @@
 
     window.lang = null;
 
-    function toggleClassFromChildren(element,childrenTagName,oldClass,newClass,extraOptions){
-      var childrenToChange = element.getElementsByTagName(childrenTagName);
-      for(var i = 0; i < childrenToChange.length; i++){
-        childrenToChange[i].classList.replace(oldClass,newClass);
+    function toggleClassFromChildren(element,childrenTagNames,oldClass,newClass,extraOptions){
+      for(var x = 0; x < childrenTagNames.length; x++){
+        var childrenToChange = element.getElementsByTagName(childrenTagNames[x]);
+        for(var i = 0; i < childrenToChange.length; i++){
+          childrenToChange[i].classList.replace(oldClass,newClass);
+        }
       }
+     
     }
 
     function animateName(){
       var pabloCamara = document.getElementById('pablocamara');
-      toggleClassFromChildren(pabloCamara,'div','start','end');
-    }
-
-    function animateLanguageSelection(show){
-      animateWelcomeBar(!show);
-
-      var languageSelector = document.getElementById('language-selector');
-      var oldClass = show ? 'start' : 'end';
-      var newClass = !show ? 'start' : 'end';
-
-      toggleClassFromChildren(languageSelector,'div',oldClass,newClass);
-      toggleClassFromChildren(languageSelector,'img',oldClass,newClass);
+      toggleClassFromChildren(pabloCamara,['div'],'start','end');
     }
 
     function animateWelcomeBar(show){
@@ -46,9 +38,31 @@
       var oldClass = show ? 'start' : 'end';
       var newClass = !show ? 'start' : 'end';
 
-      toggleClassFromChildren(welcomeBar,'div',oldClass,newClass);
-      toggleClassFromChildren(welcomeBar,'img',oldClass,newClass);
+      toggleClassFromChildren(welcomeBar,['div','img'],oldClass,newClass);
     }
+
+    function animateSectionList(show){
+      var sectionList = document.getElementById('section-list');
+      sectionList.style.display = 'block';
+
+      var oldClass = show ? 'start' : 'end';
+      var newClass = !show ? 'start' : 'end';
+
+      toggleClassFromChildren(sectionList,['div','img'],oldClass,newClass);
+    }
+
+    function animateLanguageSelection(show){
+      animateWelcomeBar(!show);
+      animateSectionList(!show);
+
+      var languageSelector = document.getElementById('language-selector');
+      var oldClass = show ? 'start' : 'end';
+      var newClass = !show ? 'start' : 'end';
+
+      toggleClassFromChildren(languageSelector,['div','img'],oldClass,newClass);
+    }
+
+    
 
     function loadAnimations(){
       animateName();
@@ -80,8 +94,6 @@
       xhr.send();
     }
 
-    
-
     function setLang(lang){
       window.lang = lang;
       var toggleFlag = document.getElementById('language-toggle-flag');
@@ -89,7 +101,7 @@
       
       translateStrings(lang);
       animateLanguageSelection(false);
-      
+      animateSectionList(true);
     }
   </script>
 
@@ -181,8 +193,6 @@
     </div>
   </div>
     
-  
-  
 
   <div id="welcome-bar">
     <div class="container">
@@ -227,6 +237,22 @@
       </div>
   </div>
 
+  <div id="section-list" style="display: none">
+    <div class="section-item first-item start">
+      <div class="image"><img class="load-biography-img start" src="assets/img/section-items/biography.png"/></div>
+      <div class="name start dts" data-dts-id="biography"></div>
+    </div>
+
+    <div class="section-item second-item start">
+      <div class="image"><img class="load-projects-img start" src="assets/img/section-items/projects.png"/></div>
+      <div class="name start dts" data-dts-id="projects"></div>
+    </div>
+
+    <div class="section-item third-item start">
+      <div class="image"><img class="load-services-img start" src="assets/img/section-items/services.png"/></div>
+      <div class="name start dts" data-dts-id="services"></div>
+    </div>
+  </div>
 
 </body>
 </html>
