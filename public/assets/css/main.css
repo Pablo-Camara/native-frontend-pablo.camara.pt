@@ -795,3 +795,342 @@ body {
 #pablocamara .loadA2Hat5.end {
   opacity: 1;
 }
+#language-selector {
+  width: 320px;
+  margin: auto;
+  position: relative;
+}
+#language-selector .welcome-string {
+  padding: 4px 0;
+  color: #00202b;
+}
+#language-selector #language-toggle-flag {
+  width: 30px;
+  position: absolute;
+  right: 5px;
+  top: 4px;
+}
+#language-selector #lang-copyright {
+  text-align: center;
+  position: absolute;
+  top: 201px;
+  font-size: 16px;
+  color: #00202b;
+  width: 320px;
+}
+#language-selector #lang-copyright.load-copyright {
+  transition: opacity 1s;
+  transition-timing-function: ease-in;
+}
+#language-selector #lang-copyright.load-copyright.start {
+  opacity: 0;
+}
+#language-selector #lang-copyright.load-copyright.end {
+  opacity: 1;
+  transition-delay: 3.8;
+}
+#language-selector .language {
+  /* transitions: */
+  /* .load-welcome-msg {
+        &.start {
+          opacity: 0;
+          transition: opacity 2s;
+          transition-timing-function: ease-in;
+        }
+        
+        &.end {
+          opacity: 1;
+          transition: opacity 1s;
+          transition-timing-function: ease-out;
+        }
+      }
+    
+      .load-section-1 {
+          &.start {
+            opacity: 0;
+            transition: opacity 2s;
+            transition-timing-function: ease-in;
+          }
+          
+          &.end {
+            opacity: 1;
+            transition: opacity 1s;
+            transition-timing-function: ease-out;
+          }
+      } */
+  /* .load-language-toggle-flag {
+        
+        &.start {
+          opacity: 0;
+          transition: opacity 1s;
+          transition-timing-function: ease-in;
+        }
+        
+        &.end {
+          opacity: 1;
+          transition: opacity 1s;
+          transition-timing-function: ease-out;
+        }
+      } */
+}
+#language-selector .language .flag img {
+  width: 30px;
+}
+#language-selector .language .flag img.load-pt-flag.start {
+  opacity: 0;
+  transition: opacity 3s;
+  transition-timing-function: ease-in-out;
+}
+#language-selector .language .flag img.load-pt-flag.end {
+  opacity: 1;
+  transition: opacity 3s;
+  transition-timing-function: ease-in-out;
+  transition-delay: 3.5s;
+}
+#language-selector .language .flag img.load-en-flag {
+  transition: opacity 3s;
+  transition-timing-function: ease-in-out;
+}
+#language-selector .language .flag img.load-en-flag.start {
+  opacity: 0;
+}
+#language-selector .language .flag img.load-en-flag.end {
+  opacity: 1;
+  transition-delay: 3.5s;
+}
+#language-selector .language .flag img.load-es-flag {
+  transition: opacity 2s;
+  transition-timing-function: ease-in-out;
+}
+#language-selector .language .flag img.load-es-flag.start {
+  opacity: 0;
+}
+#language-selector .language .flag img.load-es-flag.end {
+  opacity: 1;
+  transition-delay: 4s;
+}
+#language-selector .language .v-connector,
+#language-selector .language .h-connector,
+#language-selector .language .content {
+  background-color: #00202b;
+  position: absolute;
+}
+#language-selector .language .content {
+  width: 240px;
+  height: 40px;
+  line-height: 40px;
+  cursor: hand;
+  cursor: pointer;
+}
+#language-selector .language .content .flag {
+  float: left;
+  margin-left: 10px;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+#language-selector .language .content .flag img {
+  opacity: 0;
+}
+#language-selector .language .content .text {
+  color: #FFFFFF;
+  opacity: 0;
+}
+#language-selector .language.first-item .v-connector {
+  width: 4px;
+  height: 40px;
+  left: 0;
+  top: 0;
+}
+#language-selector .language.first-item .h-connector {
+  height: 4px;
+  width: 40px;
+  top: 40px;
+  left: 0;
+}
+#language-selector .language.first-item .content {
+  top: 20px;
+  left: 40px;
+}
+#language-selector .language.second-item .v-connector {
+  width: 4px;
+  height: 100px;
+  top: 0;
+  right: 0;
+}
+#language-selector .language.second-item .h-connector {
+  height: 4px;
+  width: 40px;
+  right: 0;
+  top: 100px;
+}
+#language-selector .language.second-item .content {
+  top: 80px;
+  right: 40px;
+}
+#language-selector .language.third-item .v-connector {
+  width: 4px;
+  height: 116px;
+  top: 44px;
+  left: 0;
+}
+#language-selector .language.third-item .h-connector {
+  height: 4px;
+  width: 40px;
+  left: 0;
+  top: 160px;
+}
+#language-selector .language.third-item .content {
+  top: 140px;
+  left: 40px;
+}
+#language-selector .language .load-pt-v-conn {
+  width: 4px;
+}
+#language-selector .language .load-pt-v-conn.start {
+  height: 0px;
+  transition: height 1s;
+  transition-timing-function: ease-in;
+}
+#language-selector .language .load-pt-v-conn.end {
+  height: 40px;
+  transition: height 1s;
+  transition-timing-function: ease-out;
+}
+#language-selector .language .load-pt-h-conn {
+  height: 4px;
+}
+#language-selector .language .load-pt-h-conn.start {
+  width: 0px;
+  transition: width 1s;
+  transition-timing-function: ease-in;
+}
+#language-selector .language .load-pt-h-conn.end {
+  width: 40px;
+  transition: width 1s;
+  transition-timing-function: ease-out;
+  transition-delay: 1s;
+}
+#language-selector .language .load-pt-content {
+  height: 40px;
+}
+#language-selector .language .load-pt-content.start {
+  width: 0px;
+  opacity: 0;
+  transition: width 1.8s, opacity 1.8s;
+  transition-timing-function: ease-in;
+}
+#language-selector .language .load-pt-content.end {
+  width: 240px;
+  opacity: 1;
+  transition: width 1.8s, opacity 1.8s;
+  transition-timing-function: ease-out;
+  transition-delay: 1.7s;
+}
+#language-selector .language .load-pt-text.start {
+  opacity: 0;
+  transition: opacity 3s;
+  transition-timing-function: ease-in-out;
+}
+#language-selector .language .load-pt-text.end {
+  opacity: 1;
+  transition: opacity 3s;
+  transition-delay: 3.5s;
+  transition-timing-function: ease-in-out;
+}
+#language-selector .language .load-en-v-conn {
+  width: 4px;
+  transition: height 1s;
+  transition-timing-function: ease-in;
+}
+#language-selector .language .load-en-v-conn.start {
+  height: 0px;
+}
+#language-selector .language .load-en-v-conn.end {
+  height: 100px;
+}
+#language-selector .language .load-en-h-conn {
+  height: 4px;
+  transition: width 1s;
+  transition-timing-function: ease-in;
+}
+#language-selector .language .load-en-h-conn.start {
+  width: 0px;
+}
+#language-selector .language .load-en-h-conn.end {
+  transition-delay: 1s;
+  width: 40px;
+}
+#language-selector .language .load-en-content {
+  height: 40px;
+  transition: width 1.8s, opacity 1.8s;
+  transition-timing-function: ease-in;
+}
+#language-selector .language .load-en-content.start {
+  width: 0px;
+  opacity: 0;
+}
+#language-selector .language .load-en-content.end {
+  width: 240px;
+  transition-delay: 1.7s;
+  opacity: 1;
+}
+#language-selector .language .load-en-text {
+  transition: opacity 3s;
+  transition-timing-function: ease-in-out;
+}
+#language-selector .language .load-en-text.start {
+  opacity: 0;
+}
+#language-selector .language .load-en-text.end {
+  transition-delay: 3.5s;
+  opacity: 1;
+}
+#language-selector .language .load-es-v-conn {
+  width: 4px;
+  transition-timing-function: ease-in;
+  transition: height 1s;
+}
+#language-selector .language .load-es-v-conn.start {
+  height: 0px;
+}
+#language-selector .language .load-es-v-conn.end {
+  transition-delay: 2s;
+  height: 116px;
+}
+#language-selector .language .load-es-h-conn {
+  height: 4px;
+  transition: width 0.5s;
+  transition-timing-function: ease-in;
+}
+#language-selector .language .load-es-h-conn.start {
+  width: 0px;
+}
+#language-selector .language .load-es-h-conn.end {
+  transition-delay: 3s;
+  width: 40px;
+}
+#language-selector .language .load-es-content {
+  height: 40px;
+  transition-timing-function: ease-in;
+  transition: width 0.8s, opacity 0.8s;
+}
+#language-selector .language .load-es-content.start {
+  width: 0px;
+  opacity: 0;
+}
+#language-selector .language .load-es-content.end {
+  width: 240px;
+  transition-delay: 3.2s;
+  opacity: 1;
+}
+#language-selector .language .load-es-text {
+  transition: opacity 2s;
+  transition-timing-function: ease-in-out;
+}
+#language-selector .language .load-es-text.start {
+  opacity: 0;
+}
+#language-selector .language .load-es-text.end {
+  transition-delay: 4s;
+  opacity: 1;
+}

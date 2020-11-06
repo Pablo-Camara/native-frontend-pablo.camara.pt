@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title>Pablo Câmara</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  
   <style>
     html,body {
       font-family:  Arial, sans-serif;
@@ -15,20 +15,38 @@
   
   <script type="text/javascript">
 
-    function animateName(){
-      var pabloCamara = document.getElementById('pablocamara');
-
-      var animationsToStart = pabloCamara.getElementsByTagName('div');
-      for(var i = 0; i < animationsToStart.length; i++){
-        animationsToStart[i].classList.replace('start','end');
+    function toggleClassFromChildren(element,childrenTagName,oldClass,newClass){
+      var childrenToChange = element.getElementsByTagName(childrenTagName);
+      for(var i = 0; i < childrenToChange.length; i++){
+        childrenToChange[i].classList.replace(oldClass,newClass);
       }
     }
-    
+    function animateName(){
+      var pabloCamara = document.getElementById('pablocamara');
+      toggleClassFromChildren(pabloCamara,'div','start','end');
+    }
 
+    function animateLanguageSelection(show){
+      var languageSelector = document.getElementById('language-selector');
+      var oldClass = show ? 'start' : 'end';
+      var newClass = !show ? 'start' : 'end';
+
+      toggleClassFromChildren(languageSelector,'div',oldClass,newClass);
+      toggleClassFromChildren(languageSelector,'img',oldClass,newClass);
+    }
+
+    function loadAnimations(){
+      animateName();
+      animateLanguageSelection(true);
+    }
+
+    function setLang(lang){
+      animateLanguageSelection(false);
+    }
   </script>
 
 </head>
-<body onload="animateName()">
+<body onload="loadAnimations()">
   
     
   <div id="top-section">
@@ -115,7 +133,42 @@
     </div>
   </div>
     
-  <h3 style="text-align: center;">Coming soon..</h3>
+  
+  
+  <div id="language-selector">
+    
+      <div class="language first-item" onClick="setLang('pt')">
+          <div class="v-connector load-pt-v-conn start"></div>
+          <div class="h-connector load-pt-h-conn start"></div>
+          <div class="content load-pt-content start">
+              <div class="flag"><img class="load-pt-flag start" src="assets/img/flags/flag-pt.png" /></div>
+              <div class="text load-pt-text start">Português</div>
+          </div>
+      </div>
+
+      <div class="language second-item" onClick="setLang('en')">
+          <div class="v-connector load-en-v-conn start"></div>
+          <div class="h-connector load-en-h-conn start"></div>
+          <div class="content load-en-content start">
+              <div class="flag"><img class="load-en-flag start" src="assets/img/flags/flag-en.png" /></div>
+              <div class="text load-en-text start">English</div>
+          </div>
+      </div>
+
+      
+      <div class="language third-item" onClick="setLang('es')">
+          <div class="v-connector load-es-v-conn start"></div>
+          <div class="h-connector load-es-h-conn start"></div>
+          <div class="content load-es-content start">
+              <div class="flag"><img class="load-es-flag start" src="assets/img/flags/flag-es.png" /></div>
+              <div class="text load-es-text start">Español</div>
+          </div>
+      </div> 
+
+      <div id="lang-copyright" class="load-copyright start">
+          Copyright @ 2020
+      </div>
+  </div>
 
 
 </body>
