@@ -30,6 +30,8 @@
     }
 
     function animateLanguageSelection(show){
+      animateWelcomeBar(!show);
+
       var languageSelector = document.getElementById('language-selector');
       var oldClass = show ? 'start' : 'end';
       var newClass = !show ? 'start' : 'end';
@@ -87,7 +89,6 @@
       
       translateStrings(lang);
       animateLanguageSelection(false);
-      animateWelcomeBar(true);
       
     }
   </script>
@@ -186,7 +187,7 @@
   <div id="welcome-bar">
     <div class="container">
       <div class="welcome-string start dts" data-dts-id="welcome-string"></div>
-      <img id="language-toggle-flag" class="load-language-toggle-flag start"/>
+      <img id="language-toggle-flag" class="load-language-toggle-flag start" onClick="animateLanguageSelection(true);"/>
     </div>
   </div>
 
