@@ -1,259 +1,338 @@
 <!doctype html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>Pablo Câmara</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
+
   <style>
-    html,body {
-      font-family:  Arial, sans-serif;
+    html,
+    body {
+      font-family: Arial, sans-serif;
     }
   </style>
 
-  <link rel="stylesheet" href="assets/css/main.css"/>
+  <link rel="stylesheet" href="assets/css/main.css" />
 
 
   <script type="text/javascript">
 
-    window.lang = null;
-
-    function toggleClassFromChildren(element,childrenTagNames,oldClass,newClass,extraOptions){
-      for(var x = 0; x < childrenTagNames.length; x++){
-        var childrenToChange = element.getElementsByTagName(childrenTagNames[x]);
-        for(var i = 0; i < childrenToChange.length; i++){
-          childrenToChange[i].classList.replace(oldClass,newClass);
+    window.PabloCamara = {
+      Helpers: {
+        toggleClassFromChildren: function (element, childrenTagNames, oldClass, newClass, extraOptions) {
+          for (var x = 0; x < childrenTagNames.length; x++) {
+            var childrenToChange = element.getElementsByTagName(childrenTagNames[x]);
+            for (var i = 0; i < childrenToChange.length; i++) {
+              childrenToChange[i].classList.replace(oldClass, newClass);
+            }
+          }
         }
+      },
+      Components: {
+        Language: {
+          translationStrings: null,
+          currentLanguage: null,
+
+          getLang: function () {
+            if (null === this.currentLanguage) {
+              this.currentLanguage = localStorage.getItem('lang');
+            }
+            //TODO: If currentLanguage still === null, attempt fetching from session
+            return this.currentLanguage;
+          },
+
+          setTranslationStrings: function (translationStrings) {
+            this.translationStrings = translationStrings;
+          },
+
+          getTranslations: function (callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+
+              if (xhr.status >= 200 && xhr.status < 300) {
+                // What do when the request is successful
+                // TODO: What todo in case JSON.parse fails ?
+                window.PabloCamara.Components.Language.setTranslationStrings(
+                  JSON.parse(xhr.response)
+                );
+                callback();
+              }
+
+            };
+            xhr.open('GET', 'assets/json/translations_' + this.currentLanguage + '.json');
+            xhr.send();
+          },
+
+          translateStrings: function () {
+            this.getTranslations(function () {
+              var contentToTranslate = document.getElementsByClassName('dts');
+              for (var i = 0; i < contentToTranslate.length; i++) {
+                var stringId = contentToTranslate[i].getAttribute('data-dts-id')
+                contentToTranslate[i].innerHTML = window.PabloCamara.Components.Language.translationStrings[stringId];
+              }
+            });
+          },
+
+          setLanguageTogglerCurrentFlag: function () {
+            var toggleFlag = document.getElementById('language-toggle-flag');
+            toggleFlag.setAttribute('src', 'assets/img/flags/flag-' + window.PabloCamara.Components.Language.currentLanguage + '.png');
+          },
+
+          setLang: function (lang) {
+            this.currentLanguage = lang;
+            localStorage.setItem('lang', lang);
+            this.setLanguageTogglerCurrentFlag();
+            //TODO: Save language in session AND/OR database
+            this.translateStrings();
+          },
+
+          animateLanguageSelection: function (show) {
+            var languageSelector = document.getElementById('language-selector');
+            var oldClass = show ? 'start' : 'end';
+            var newClass = !show ? 'start' : 'end';
+
+            window.PabloCamara.Helpers.toggleClassFromChildren(languageSelector, ['div', 'img'], oldClass, newClass);
+          },
+
+          setupLang: function (lang) {
+            if (!lang && this.getLang()) {
+              this.setLang(this.currentLanguage);
+              return true;
+            }
+
+            if (lang) {
+              this.setLang(lang);
+              return true;
+            }
+
+            return false;
+          }
+        },
+        Header: {
+          animateName: function () {
+            var pabloCamara = document.getElementById('pablocamara');
+            window.PabloCamara.Helpers.toggleClassFromChildren(pabloCamara, ['div'], 'start', 'end');
+          }
+        },
+        WelcomeBar: {
+
+          animateWelcomeBar: function (show) {
+            var welcomeBar = document.getElementById('welcome-bar');
+
+            var oldClass = show ? 'start' : 'end';
+            var newClass = !show ? 'start' : 'end';
+
+            window.PabloCamara.Helpers.toggleClassFromChildren(welcomeBar, ['div', 'img'], oldClass, newClass);
+          },
+
+        },
+        SectionList: {
+
+          animateSectionList: function (show) {
+            var sectionList = document.getElementById('section-list');
+            sectionList.style.display = 'block';
+
+            setTimeout(function () {
+              var oldClass = show ? 'start' : 'end';
+              var newClass = !show ? 'start' : 'end';
+
+              window.PabloCamara.Helpers.toggleClassFromChildren(sectionList, ['div', 'img'], oldClass, newClass);
+            }, 1); // Avoid bug of skipping animations
+
+          }
+
+        }
+      },
+      Views: {
+        homePage: function (show) {
+          window.PabloCamara.Components.WelcomeBar.animateWelcomeBar(show);
+          window.PabloCamara.Components.SectionList.animateSectionList(show);
+        }
+      },
+      ViewRouter: {
+        call: function (viewName, viewParam) {
+          if (window.PabloCamara.Views.hasOwnProperty(viewName)
+            && typeof window.PabloCamara.Views[viewName] === 'function') {
+            window.PabloCamara.Views[viewName](viewParam);
+            return;
+          }
+          // TODO: View not found 404 alert
+        },
+        routeAfterLanguageIsSelected: function (viewName, viewParam) {
+          window.PabloCamara.Components.Header.animateName();
+          if (false === window.PabloCamara.Components.Language.setupLang()) {
+            window.PabloCamara.Components.Language.animateLanguageSelection(true);
+            return;
+          }
+          this.call(viewName, viewParam);
+        },
+        routeWithLanguage(lang, viewName, viewParam) {
+          window.PabloCamara.Components.Language.animateLanguageSelection(false);
+          if (window.PabloCamara.Components.Language.setupLang(lang)) {
+            this.call(viewName, viewParam);
+          }
+        },
       }
-     
-    }
+    };
 
-    function animateName(){
-      var pabloCamara = document.getElementById('pablocamara');
-      toggleClassFromChildren(pabloCamara,['div'],'start','end');
-    }
-
-    function animateWelcomeBar(show){
-      var welcomeBar = document.getElementById('welcome-bar');
-
-      var oldClass = show ? 'start' : 'end';
-      var newClass = !show ? 'start' : 'end';
-
-      toggleClassFromChildren(welcomeBar,['div','img'],oldClass,newClass);
-    }
-
-    function animateSectionList(show){
-      var sectionList = document.getElementById('section-list');
-      sectionList.style.display = 'block';
-
-      var oldClass = show ? 'start' : 'end';
-      var newClass = !show ? 'start' : 'end';
-
-      toggleClassFromChildren(sectionList,['div','img'],oldClass,newClass);
-    }
-
-    function animateLanguageSelection(show){
-      animateWelcomeBar(!show);
-      animateSectionList(!show);
-
-      var languageSelector = document.getElementById('language-selector');
-      var oldClass = show ? 'start' : 'end';
-      var newClass = !show ? 'start' : 'end';
-
-      toggleClassFromChildren(languageSelector,['div','img'],oldClass,newClass);
-    }
-
-    
-
-    function loadAnimations(){
-      animateName();
-      animateLanguageSelection(true);
-    }
-
-    function translateStrings(lang){
-      getTranslations(lang,function(){
-        var contentToTranslate = document.getElementsByClassName('dts');
-        for(var i = 0; i < contentToTranslate.length; i++){
-          var stringId = contentToTranslate[i].getAttribute('data-dts-id')
-          contentToTranslate[i].innerHTML = window.translationStrings[stringId];
-        }
-      });
-    }
-
-    function getTranslations(lang,callback){
-      var xhr = new XMLHttpRequest();
-      xhr.onload = function () {
-
-        if (xhr.status >= 200 && xhr.status < 300) {
-          // What do when the request is successful
-          window.translationStrings = JSON.parse(xhr.response);
-          callback();
-        } 
-      
-      };
-      xhr.open('GET', 'assets/json/translations_' + lang + '.json');
-      xhr.send();
-    }
-
-    function setLang(lang){
-      window.lang = lang;
-      var toggleFlag = document.getElementById('language-toggle-flag');
-      toggleFlag.setAttribute('src','assets/img/flags/flag-' + window.lang + '.png');
-      
-      translateStrings(lang);
-      animateLanguageSelection(false);
-      animateSectionList(true);
-    }
   </script>
 
-  
+
 </head>
-<body onload="loadAnimations()">
-  
-    
+
+<body>
+
+
   <div id="top-section">
     <div id="pablocamara">
-        <!-- First letter P -->
-        <div class="loadLeftP start"></div>
-        <div class="loadUpperP start"></div>
-        <div class="loadLowerP start"></div>
-        <div class="loadRightP start"></div>
+      <!-- First letter P -->
+      <div class="loadLeftP start"></div>
+      <div class="loadUpperP start"></div>
+      <div class="loadLowerP start"></div>
+      <div class="loadRightP start"></div>
 
-        <!-- First letter A -->
-        <div class ="loadLeftA start"></div>
-        <div class ="loadRightA start"></div>
-        <div class ="loadTopA start"></div>
-        <div class ="loadBottomA start"></div>
+      <!-- First letter A -->
+      <div class="loadLeftA start"></div>
+      <div class="loadRightA start"></div>
+      <div class="loadTopA start"></div>
+      <div class="loadBottomA start"></div>
 
 
-            
-        <!-- First letter B -->
-        <div class="loadLeftB start"></div>
-        <div class="loadTopB start"></div>
-        <div class="loadTopRightB start"></div>
-        <div class="loadMiddleB start"></div>
-        <div class="loadBottomB start"></div>
-        <div class="loadBottomRightB start"></div>
-    
-        <!-- First letter L -->
-        <div class="loadLeftL start"></div>
-        <div class="loadBottomL start"></div>
-    
-        <!-- First letter O -->
-        <div class="loadLeftO start"></div>
-        <div class="loadRightO start"></div>
-        <div class="loadTopO start"></div>
-        <div class="loadBottomO start"></div>
-    
-    
-        <!-- First letter C -->
-        <div class="loadTopC start"></div>
-        <div class="loadLeftC start"></div>
-        <div class="loadBottomC start"></div>
-    
-        <!-- Second letter A -->
-        <div class="loadA2Hat1 start"></div>
-        <div class="loadA2Hat2 start"></div>
-        <div class="loadA2Hat3 start"></div>
-        <div class="loadA2Hat4 start"></div>
-        <div class="loadA2Hat5 start"></div>
-        <div class="loadLeftA2 start"></div>
-        <div class="loadRightA2 start"></div>
-        <div class="loadTopA2 start"></div>
-        <div class="loadBottomA2 start"></div>
-    
-        <!-- First letter M -->
-        <div class="loadLeftM start"></div>
-        <div class="loadMiddleM1 start"></div>
-        <div class="loadMiddleM2 start"></div>
-        <div class="loadMiddleM3 start"></div>
-        <div class="loadMiddleM4 start"></div>
-        <div class="loadMiddleM5 start"></div>
-        <div class="loadRightM start"></div>
-    
-        <!-- Third letter A -->
-        <div class="loadLeftA3 start"></div>
-        <div class="loadRightA3 start"></div>
-        <div class="loadTopA3 start"></div>
-        <div class="loadBottomA3 start"></div>
-        
-        <!-- First letter R -->
-        <div class="loadLeftR start"></div>
-        <div class="loadUpperR start"></div>
-        <div class="loadMiddleR start"></div>
-        <div class="loadTopRightR start"></div>
-        <div class="loadBottomRightR1 start"></div>
-        <div class="loadBottomRightR2 start"></div>
-        <div class="loadBottomRightR3 start"></div>
-    
-        <!-- Fourth letter A -->
-        <div class="loadLeftA4 start"></div>
-        <div class="loadRightA4 start"></div>
-        <div class="loadTopA4 start"></div>
-        <div class="loadBottomA4 start"></div>
-        
+
+      <!-- First letter B -->
+      <div class="loadLeftB start"></div>
+      <div class="loadTopB start"></div>
+      <div class="loadTopRightB start"></div>
+      <div class="loadMiddleB start"></div>
+      <div class="loadBottomB start"></div>
+      <div class="loadBottomRightB start"></div>
+
+      <!-- First letter L -->
+      <div class="loadLeftL start"></div>
+      <div class="loadBottomL start"></div>
+
+      <!-- First letter O -->
+      <div class="loadLeftO start"></div>
+      <div class="loadRightO start"></div>
+      <div class="loadTopO start"></div>
+      <div class="loadBottomO start"></div>
+
+
+      <!-- First letter C -->
+      <div class="loadTopC start"></div>
+      <div class="loadLeftC start"></div>
+      <div class="loadBottomC start"></div>
+
+      <!-- Second letter A -->
+      <div class="loadA2Hat1 start"></div>
+      <div class="loadA2Hat2 start"></div>
+      <div class="loadA2Hat3 start"></div>
+      <div class="loadA2Hat4 start"></div>
+      <div class="loadA2Hat5 start"></div>
+      <div class="loadLeftA2 start"></div>
+      <div class="loadRightA2 start"></div>
+      <div class="loadTopA2 start"></div>
+      <div class="loadBottomA2 start"></div>
+
+      <!-- First letter M -->
+      <div class="loadLeftM start"></div>
+      <div class="loadMiddleM1 start"></div>
+      <div class="loadMiddleM2 start"></div>
+      <div class="loadMiddleM3 start"></div>
+      <div class="loadMiddleM4 start"></div>
+      <div class="loadMiddleM5 start"></div>
+      <div class="loadRightM start"></div>
+
+      <!-- Third letter A -->
+      <div class="loadLeftA3 start"></div>
+      <div class="loadRightA3 start"></div>
+      <div class="loadTopA3 start"></div>
+      <div class="loadBottomA3 start"></div>
+
+      <!-- First letter R -->
+      <div class="loadLeftR start"></div>
+      <div class="loadUpperR start"></div>
+      <div class="loadMiddleR start"></div>
+      <div class="loadTopRightR start"></div>
+      <div class="loadBottomRightR1 start"></div>
+      <div class="loadBottomRightR2 start"></div>
+      <div class="loadBottomRightR3 start"></div>
+
+      <!-- Fourth letter A -->
+      <div class="loadLeftA4 start"></div>
+      <div class="loadRightA4 start"></div>
+      <div class="loadTopA4 start"></div>
+      <div class="loadBottomA4 start"></div>
+
     </div>
   </div>
-    
+
 
   <div id="welcome-bar">
     <div class="container">
       <div class="welcome-string start dts" data-dts-id="welcome-string"></div>
-      <img id="language-toggle-flag" class="load-language-toggle-flag start" onClick="animateLanguageSelection(true);"/>
+      <img id="language-toggle-flag" class="load-language-toggle-flag start"
+        onClick="animateLanguageSelection(true);" />
     </div>
   </div>
 
   <div id="language-selector">
-      
 
-      <div class="language first-item" onClick="setLang('pt')">
-          <div class="v-connector load-pt-v-conn start"></div>
-          <div class="h-connector load-pt-h-conn start"></div>
-          <div class="content load-pt-content start">
-              <div class="flag"><img class="load-pt-flag start" src="assets/img/flags/flag-pt.png" /></div>
-              <div class="text load-pt-text start">Português</div>
-          </div>
+
+    <div class="language first-item" onClick="window.PabloCamara.ViewRouter.routeWithLanguage('pt','homePage',true)">
+      <div class="v-connector load-pt-v-conn start"></div>
+      <div class="h-connector load-pt-h-conn start"></div>
+      <div class="content load-pt-content start">
+        <div class="flag"><img class="load-pt-flag start" src="assets/img/flags/flag-pt.png" /></div>
+        <div class="text load-pt-text start">Português</div>
       </div>
+    </div>
 
-      <div class="language second-item" onClick="setLang('en')">
-          <div class="v-connector load-en-v-conn start"></div>
-          <div class="h-connector load-en-h-conn start"></div>
-          <div class="content load-en-content start">
-              <div class="flag"><img class="load-en-flag start" src="assets/img/flags/flag-en.png" /></div>
-              <div class="text load-en-text start">English</div>
-          </div>
+    <div class="language second-item" onClick="window.PabloCamara.ViewRouter.routeWithLanguage('en','homePage',true)">
+      <div class="v-connector load-en-v-conn start"></div>
+      <div class="h-connector load-en-h-conn start"></div>
+      <div class="content load-en-content start">
+        <div class="flag"><img class="load-en-flag start" src="assets/img/flags/flag-en.png" /></div>
+        <div class="text load-en-text start">English</div>
       </div>
+    </div>
 
-      
-      <div class="language third-item" onClick="setLang('es')">
-          <div class="v-connector load-es-v-conn start"></div>
-          <div class="h-connector load-es-h-conn start"></div>
-          <div class="content load-es-content start">
-              <div class="flag"><img class="load-es-flag start" src="assets/img/flags/flag-es.png" /></div>
-              <div class="text load-es-text start">Español</div>
-          </div>
-      </div> 
 
-      <div id="lang-copyright" class="load-copyright start">
-          Copyright @ 2020
+    <div class="language third-item" onClick="window.PabloCamara.ViewRouter.routeWithLanguage('es','homePage',true)">
+      <div class="v-connector load-es-v-conn start"></div>
+      <div class="h-connector load-es-h-conn start"></div>
+      <div class="content load-es-content start">
+        <div class="flag"><img class="load-es-flag start" src="assets/img/flags/flag-es.png" /></div>
+        <div class="text load-es-text start">Español</div>
       </div>
+    </div>
+
+    <div id="lang-copyright" class="load-copyright start">
+      Copyright @ 2020
+    </div>
   </div>
 
   <div id="section-list" style="display: none">
     <div class="section-item start">
-      <div class="image"><img class="start" src="assets/img/section-items/biography.png"/></div>
+      <div class="image"><img class="start" src="assets/img/section-items/biography.png" /></div>
       <div class="name start dts" data-dts-id="biography"></div>
     </div>
 
     <div class="section-item start">
-      <div class="image"><img class="start" src="assets/img/section-items/projects.png"/></div>
+      <div class="image"><img class="start" src="assets/img/section-items/projects.png" /></div>
       <div class="name start dts" data-dts-id="projects"></div>
     </div>
 
     <div class="section-item start">
-      <div class="image"><img class="start" src="assets/img/section-items/services.png"/></div>
+      <div class="image"><img class="start" src="assets/img/section-items/services.png" /></div>
       <div class="name start dts" data-dts-id="services"></div>
     </div>
   </div>
+
+  <script type="text/javascript">
+    window.PabloCamara.ViewRouter.routeAfterLanguageIsSelected('homePage', true);
+  </script>
 </body>
+
 </html>

@@ -808,15 +808,14 @@ body {
 #welcome-bar .welcome-string {
   padding: 4px 0;
   color: #00202b;
+  transition: opacity 2.3s;
 }
 #welcome-bar .welcome-string.start {
   opacity: 0;
-  transition: opacity 1s;
   transition-timing-function: ease-out;
 }
 #welcome-bar .welcome-string.end {
   opacity: 1;
-  transition: opacity 4s;
   transition-timing-function: ease-in;
 }
 #welcome-bar #language-toggle-flag {
@@ -1124,7 +1123,7 @@ body {
   opacity: 1;
 }
 #section-list {
-  width: 320px;
+  width: 310px;
   margin: auto;
   margin-top: 32px;
 }
@@ -1132,41 +1131,43 @@ body {
   cursor: hand;
   cursor: pointer;
   background: #00202b;
-  height: 250px;
+  width: 100px;
+  display: inline-block;
   margin: auto;
   margin-bottom: 10px;
-  transition: width 1.4s;
+  transition: opacity 1.4s;
   transition-timing-function: ease-out;
 }
 #section-list .section-item.start {
-  width: 0px;
+  opacity: 0;
   transition-delay: 1.5s;
 }
 #section-list .section-item.end {
   transition-delay: 1.2s;
-  width: 300px;
+  opacity: 1;
 }
 #section-list .section-item .image {
-  width: 153px;
+  width: 50px;
   margin: auto;
   padding-top: 20px;
 }
 #section-list .section-item .image img {
-  transition: opacity 2s, width 1.2s;
+  transition: opacity 2s;
+  width: 50px;
 }
 #section-list .section-item .image img.start {
   opacity: 0;
 }
 #section-list .section-item .image img.end {
-  transition-delay: 2.2s;
-  width: 153px;
+  transition-delay: 2s;
   opacity: 1;
 }
 #section-list .section-item .name {
   color: #fff;
-  font-size: 29px;
+  font-size: 14px;
   text-align: center;
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 #section-list .section-item .name.start {
   opacity: 0;
