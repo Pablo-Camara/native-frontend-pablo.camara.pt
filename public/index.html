@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Pablo Câmara</title>
+  <title>Pablo Câmara - Full Stack Software Engineer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
@@ -30,85 +30,7 @@
         }
       },
       Components: {
-        Language: {
-          translationStrings: null,
-          currentLanguage: null,
 
-          getLang: function () {
-            if (null === this.currentLanguage) {
-              this.currentLanguage = localStorage.getItem('lang');
-            }
-            //TODO: If currentLanguage still === null, attempt fetching from session
-            return this.currentLanguage;
-          },
-
-          setTranslationStrings: function (translationStrings) {
-            this.translationStrings = translationStrings;
-          },
-
-          getTranslations: function (callback) {
-            var xhr = new XMLHttpRequest();
-            xhr.onload = function () {
-
-              if (xhr.status >= 200 && xhr.status < 300) {
-                // What do when the request is successful
-                // TODO: What todo in case JSON.parse fails ?
-                window.PabloCamara.Components.Language.setTranslationStrings(
-                  JSON.parse(xhr.response)
-                );
-                callback();
-              }
-
-            };
-            xhr.open('GET', 'assets/json/translations_' + this.currentLanguage + '.json');
-            xhr.send();
-          },
-
-          translateStrings: function () {
-            this.getTranslations(function () {
-              var contentToTranslate = document.getElementsByClassName('dts');
-              for (var i = 0; i < contentToTranslate.length; i++) {
-                var stringId = contentToTranslate[i].getAttribute('data-dts-id')
-                contentToTranslate[i].innerHTML = window.PabloCamara.Components.Language.translationStrings[stringId];
-              }
-            });
-          },
-
-          setLanguageTogglerCurrentFlag: function () {
-            var toggleFlag = document.getElementById('language-toggle-flag');
-            toggleFlag.setAttribute('src', 'assets/img/flags/flag-' + window.PabloCamara.Components.Language.currentLanguage + '.png');
-          },
-
-          setLang: function (lang) {
-            this.currentLanguage = lang;
-            localStorage.setItem('lang', lang);
-            this.setLanguageTogglerCurrentFlag();
-            //TODO: Save language in session AND/OR database
-            this.translateStrings();
-          },
-
-          animateLanguageSelection: function (show) {
-            var languageSelector = document.getElementById('language-selector');
-            var oldClass = show ? 'start' : 'end';
-            var newClass = !show ? 'start' : 'end';
-
-            window.PabloCamara.Helpers.toggleClassFromChildren(languageSelector, ['div', 'img'], oldClass, newClass);
-          },
-
-          setupLang: function (lang) {
-            if (!lang && this.getLang()) {
-              this.setLang(this.currentLanguage);
-              return true;
-            }
-
-            if (lang) {
-              this.setLang(lang);
-              return true;
-            }
-
-            return false;
-          }
-        },
         Header: {
           animateName: function () {
             var pabloCamara = document.getElementById('pablocamara');
@@ -127,53 +49,19 @@
           },
 
         },
-        SectionList: {
 
-          animateSectionList: function (show) {
-            var sectionList = document.getElementById('section-list');
-            sectionList.style.display = 'block';
-
-            setTimeout(function () {
-              var oldClass = show ? 'start' : 'end';
-              var newClass = !show ? 'start' : 'end';
-
-              window.PabloCamara.Helpers.toggleClassFromChildren(sectionList, ['div', 'img'], oldClass, newClass);
-            }, 1); // Avoid bug of skipping animations
-
-          }
-
-        }
       },
       Views: {
         homePage: function (show) {
-          window.PabloCamara.Components.WelcomeBar.animateWelcomeBar(show);
-          window.PabloCamara.Components.SectionList.animateSectionList(show);
+          setTimeout(function () {
+            window.PabloCamara.Components.Header.animateName();
+            window.PabloCamara.Components.WelcomeBar.animateWelcomeBar(show);
+          }, 1);
+
         }
       },
-      ViewRouter: {
-        call: function (viewName, viewParam) {
-          if (window.PabloCamara.Views.hasOwnProperty(viewName)
-            && typeof window.PabloCamara.Views[viewName] === 'function') {
-            window.PabloCamara.Views[viewName](viewParam);
-            return;
-          }
-          // TODO: View not found 404 alert
-        },
-        routeAfterLanguageIsSelected: function (viewName, viewParam) {
-          window.PabloCamara.Components.Header.animateName();
-          if (false === window.PabloCamara.Components.Language.setupLang()) {
-            window.PabloCamara.Components.Language.animateLanguageSelection(true);
-            return;
-          }
-          this.call(viewName, viewParam);
-        },
-        routeWithLanguage(lang, viewName, viewParam) {
-          window.PabloCamara.Components.Language.animateLanguageSelection(false);
-          if (window.PabloCamara.Components.Language.setupLang(lang)) {
-            this.call(viewName, viewParam);
-          }
-        },
-      }
+
+
     };
 
   </script>
@@ -271,67 +159,26 @@
 
   <div id="welcome-bar">
     <div class="container">
-      <div class="welcome-string start dts" data-dts-id="welcome-string"></div>
-      <img id="language-toggle-flag" class="load-language-toggle-flag start"
-        onClick="animateLanguageSelection(true);" />
+      <div class="welcome-string start dts" data-dts-id="welcome-string" style="text-align: center">
+        <h1>Welcome</h1>
+        <h2>I am under construction!</h2>
+        Please come back some other time!<br />
+        Thanks!!<br />
+        <br />
+        <small>
+          If you need web development services,<br/>
+          feel free to send me an email:<br/>
+          <a href="mailto:pablo.camara.pt@gmail.com">by clicking here</a>
+
+        </small>
+      </div>
     </div>
   </div>
 
-  <div id="language-selector">
 
-
-    <div class="language first-item" onClick="window.PabloCamara.ViewRouter.routeWithLanguage('pt','homePage',true)">
-      <div class="v-connector load-pt-v-conn start"></div>
-      <div class="h-connector load-pt-h-conn start"></div>
-      <div class="content load-pt-content start">
-        <div class="flag"><img class="load-pt-flag start" src="assets/img/flags/flag-pt.png" /></div>
-        <div class="text load-pt-text start">Português</div>
-      </div>
-    </div>
-
-    <div class="language second-item" onClick="window.PabloCamara.ViewRouter.routeWithLanguage('en','homePage',true)">
-      <div class="v-connector load-en-v-conn start"></div>
-      <div class="h-connector load-en-h-conn start"></div>
-      <div class="content load-en-content start">
-        <div class="flag"><img class="load-en-flag start" src="assets/img/flags/flag-en.png" /></div>
-        <div class="text load-en-text start">English</div>
-      </div>
-    </div>
-
-
-    <div class="language third-item" onClick="window.PabloCamara.ViewRouter.routeWithLanguage('es','homePage',true)">
-      <div class="v-connector load-es-v-conn start"></div>
-      <div class="h-connector load-es-h-conn start"></div>
-      <div class="content load-es-content start">
-        <div class="flag"><img class="load-es-flag start" src="assets/img/flags/flag-es.png" /></div>
-        <div class="text load-es-text start">Español</div>
-      </div>
-    </div>
-
-    <div id="lang-copyright" class="load-copyright start">
-      Copyright @ 2020
-    </div>
-  </div>
-
-  <div id="section-list" style="display: none">
-    <div class="section-item start">
-      <div class="image"><img class="start" src="assets/img/section-items/biography.png" /></div>
-      <div class="name start dts" data-dts-id="biography"></div>
-    </div>
-
-    <div class="section-item start">
-      <div class="image"><img class="start" src="assets/img/section-items/projects.png" /></div>
-      <div class="name start dts" data-dts-id="projects"></div>
-    </div>
-
-    <div class="section-item start">
-      <div class="image"><img class="start" src="assets/img/section-items/services.png" /></div>
-      <div class="name start dts" data-dts-id="services"></div>
-    </div>
-  </div>
 
   <script type="text/javascript">
-    window.PabloCamara.ViewRouter.routeAfterLanguageIsSelected('homePage', true);
+    window.PabloCamara.Views.homePage(true);
   </script>
 </body>
 
