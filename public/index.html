@@ -21,16 +21,37 @@
     window.PabloCamara = {
       Helpers: {
         toggleClassFromChildren: function (element, childrenTagNames, oldClass, newClass, extraOptions) {
+          var totalReplaces = 0;
           for (var x = 0; x < childrenTagNames.length; x++) {
             var childrenToChange = element.getElementsByTagName(childrenTagNames[x]);
             for (var i = 0; i < childrenToChange.length; i++) {
+              if (!childrenToChange[i].classList.contains(oldClass)) {
+                continue;
+              }
               childrenToChange[i].classList.replace(oldClass, newClass);
+              totalReplaces++;
             }
           }
+          return totalReplaces;
+        },
+        callbackOnChildrenWithClass(element, childrenTagNames, className, callback) {
+          var totalAdded = 0;
+          for (var x = 0; x < childrenTagNames.length; x++) {
+            var childrenToChange = element.getElementsByTagName(childrenTagNames[x]);
+            for (var i = 0; i < childrenToChange.length; i++) {
+              if (!childrenToChange[i].classList.contains(className)) {
+                continue;
+              }
+              callback(childrenToChange[i]);
+              totalAdded++;
+            }
+          }
+          return totalAdded;
         }
       },
       Components: {
         Language: {
+          addedTransitionEndListener: false,
           translationStrings: null,
           currentLanguage: null,
 
@@ -77,6 +98,12 @@
           setLanguageTogglerCurrentFlag: function () {
             var toggleFlag = document.getElementById('language-toggle-flag');
             toggleFlag.setAttribute('src', 'assets/img/flags/flag-' + window.PabloCamara.Components.Language.currentLanguage + '.png');
+
+            toggleFlag.onclick = function () {
+              window.PabloCamara.ViewRouter.hideVisibleView();
+              window.PabloCamara.Components.Language.animateLanguageSelection(true);
+            };
+
           },
 
           setLang: function (lang) {
@@ -88,11 +115,42 @@
           },
 
           animateLanguageSelection: function (show) {
+
             var languageSelector = document.getElementById('language-selector');
+            languageSelector.style.display = 'block';
             var oldClass = show ? 'start' : 'end';
             var newClass = !show ? 'start' : 'end';
+            var targetTagNames = ['div', 'img'];
 
-            window.PabloCamara.Helpers.toggleClassFromChildren(languageSelector, ['div', 'img'], oldClass, newClass);
+            this.totalTransitionsEnded = 0;
+            if (this.addedTransitionEndListener === false) {
+              window.PabloCamara.Helpers.callbackOnChildrenWithClass(languageSelector, targetTagNames, oldClass, function (child) {
+
+                var listener = function (event) {
+                  if(child.classList.contains('start')){
+                    window.PabloCamara.Components.Language.totalTransitionsEnded++;
+                    // TODO: Grab total transitions dynamically
+                    if(window.PabloCamara.Components.Language.totalTransitionsEnded >= 25){
+                      languageSelector.style.display = 'none';
+                    }
+                  }
+                  
+                  
+                };
+
+                child.addEventListener('transitionend', listener);
+
+
+              });
+              this.addedTransitionEndListener = true;
+            }
+
+            setTimeout(function () {
+              window.PabloCamara.Helpers.toggleClassFromChildren(languageSelector, targetTagNames, oldClass, newClass);
+            }, 100);
+
+
+
           },
 
           setupLang: function (lang) {
@@ -111,34 +169,96 @@
         },
         Header: {
           animateName: function () {
-            var pabloCamara = document.getElementById('pablocamara');
-            window.PabloCamara.Helpers.toggleClassFromChildren(pabloCamara, ['div'], 'start', 'end');
+            setTimeout(function () {
+              var pabloCamara = document.getElementById('pablocamara');
+              window.PabloCamara.Helpers.toggleClassFromChildren(pabloCamara, ['div'], 'start', 'end');
+            }, 100);
           }
         },
         WelcomeBar: {
-
+          addedTransitionEndListener: false,
           animateWelcomeBar: function (show) {
             var welcomeBar = document.getElementById('welcome-bar');
+            welcomeBar.style.display = 'block';
 
             var oldClass = show ? 'start' : 'end';
             var newClass = !show ? 'start' : 'end';
 
-            window.PabloCamara.Helpers.toggleClassFromChildren(welcomeBar, ['div', 'img'], oldClass, newClass);
+            var targetTagNames = ['div', 'img'];
+
+            this.totalTransitionsEnded = 0;
+            if (this.addedTransitionEndListener === false) {
+              window.PabloCamara.Helpers.callbackOnChildrenWithClass(welcomeBar, targetTagNames, oldClass, function (child) {
+
+                var listener = function (event) {
+                  if(child.classList.contains('start')){
+                    window.PabloCamara.Components.WelcomeBar.totalTransitionsEnded++;
+                    if(window.PabloCamara.Components.WelcomeBar.totalTransitionsEnded){
+                      welcomeBar.style.display = 'none';
+                    }
+                  }
+                  
+                  
+                };
+
+                child.addEventListener('transitionend', listener);
+
+
+              });
+              this.addedTransitionEndListener = true;
+            }
+
+            setTimeout(function(){
+              window.PabloCamara.Helpers.toggleClassFromChildren(welcomeBar, targetTagNames, oldClass, newClass);
+            },100);
+            
           },
 
         },
         SectionList: {
-
+          addedTransitionEndListener: false,
+          hide: function () {
+            var sectionList = document.getElementById('section-list');
+            sectionList.style.display = 'none';
+          },
           animateSectionList: function (show) {
+
+
             var sectionList = document.getElementById('section-list');
             sectionList.style.display = 'block';
+            var targetTagNames = ['div', 'img'];
+
+            var oldClass = show ? 'start' : 'end';
+            var newClass = !show ? 'start' : 'end';
+
+            this.totalTransitionsEnded = 0;
+            if (this.addedTransitionEndListener === false) {
+              window.PabloCamara.Helpers.callbackOnChildrenWithClass(sectionList, targetTagNames, oldClass, function (child) {
+
+                var listener = function (event) {
+                  if(child.classList.contains('start')){
+                    window.PabloCamara.Components.SectionList.totalTransitionsEnded++;
+                    if(window.PabloCamara.Components.SectionList.totalTransitionsEnded >= 15){
+                      sectionList.style.display = 'none';
+                    }
+                  }
+                  
+                  
+                };
+
+                child.addEventListener('transitionend', listener);
+
+
+              });
+              this.addedTransitionEndListener = true;
+            }
+
 
             setTimeout(function () {
-              var oldClass = show ? 'start' : 'end';
-              var newClass = !show ? 'start' : 'end';
+              window.PabloCamara.Helpers.toggleClassFromChildren(sectionList, targetTagNames, oldClass, newClass);
+            }, 100);
 
-              window.PabloCamara.Helpers.toggleClassFromChildren(sectionList, ['div', 'img'], oldClass, newClass);
-            }, 1); // Avoid bug of skipping animations
+
 
           }
 
@@ -151,10 +271,23 @@
         }
       },
       ViewRouter: {
+        visibleView: null,
+        hideVisibleView: function () {
+          if (window.PabloCamara.Views.hasOwnProperty(this.visibleView)
+            && typeof window.PabloCamara.Views[this.visibleView] === 'function') {
+            window.PabloCamara.Views[this.visibleView](false);
+            this.visibleView = null;
+            return;
+          }
+          // TODO: View not found 404 alert
+        },
         call: function (viewName, viewParam) {
           if (window.PabloCamara.Views.hasOwnProperty(viewName)
             && typeof window.PabloCamara.Views[viewName] === 'function') {
-            window.PabloCamara.Views[viewName](viewParam);
+            
+              window.PabloCamara.ViewRouter.visibleView = viewName;
+              window.PabloCamara.Views[viewName](viewParam);
+            
             return;
           }
           // TODO: View not found 404 alert
@@ -269,11 +402,10 @@
   </div>
 
 
-  <div id="welcome-bar">
+  <div id="welcome-bar" style="display: none;">
     <div class="container">
       <div class="welcome-string start dts" data-dts-id="welcome-string"></div>
-      <img id="language-toggle-flag" class="load-language-toggle-flag start"
-        onClick="animateLanguageSelection(true);" />
+      <img id="language-toggle-flag" class="load-language-toggle-flag start" />
     </div>
   </div>
 
@@ -332,6 +464,8 @@
 
   <script type="text/javascript">
     window.PabloCamara.ViewRouter.routeAfterLanguageIsSelected('homePage', true);
+
+
   </script>
 </body>
 
