@@ -4,6 +4,21 @@
         "en": "Welcome!",
         "es": "Bienvenido!"
     },
+    "under_construction": {
+        "pt": "Site em construção",
+        "en": "Website under construction",
+        "es": "Página web en construcción"
+    },
+    "return_later": {
+        "pt": "Por favor volte outra hora!",
+        "en": "Please come back some other time!",
+        "es": "Por favor, vuelva en otro momento!"
+    },
+    "contact_if_needed": {
+        "pt": "Caso seja realmente necessário,<br/>sinta-se à vontade para me enviar um email:<br/><a href=\"mailto:pablo.camara.pt@gmail.com\">clicando aqui</a>",
+        "en": "If really necessary,<br/>feel free to send me an email:<br/><a href=\"mailto:pablo.camara.pt@gmail.com\">by clicking here</a>",
+        "es": "Si es realmente necesario,<br/>no dude en enviarme un correo electrónico:<br/><a href=\"mailto:pablo.camara.pt@gmail.com\">haciendo clic aquí</a>"
+    },
     "biography": {
         "pt": "Biografia",
         "en": "Biography",

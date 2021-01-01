@@ -1032,6 +1032,16 @@ html,body {
   }
 }
 
+#under-construction {
+  color: #00202B;
+  text-align: center;
+  padding: 25px 0;
+
+  .opacity-animation  {
+    transition-delay: 2s;
+  }
+}
+
 #language-selector {
   width: 320px;
   margin: auto;
@@ -1474,5 +1484,20 @@ html,body {
         transition-delay: 3s;
       }
     }
+  }
+}
+
+.opacity-animation {
+  transition: opacity 2.3s;
+
+  &.start {
+    opacity: 0;
+    transition-timing-function: ease-out;
+    
+  }
+
+  &.end {
+    opacity: 1;
+    transition-timing-function: ease-in;
   }
 }

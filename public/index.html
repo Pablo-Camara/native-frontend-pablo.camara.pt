@@ -27,6 +27,7 @@
   <script type="text/javascript">
 
     window.PabloCamara = {
+      isUnderConstruction: true,
       _hasBodyLoaded: false,
       Helpers: {
         toggleClassFromChildren: function (element, childrenTagNames, oldClass, newClass, extraOptions) {
@@ -339,12 +340,55 @@
 
           }
 
+        },
+        UnderConstruction: {
+          addedTransitionEndListener: false,
+          animate: function (show) {
+
+            var el = document.getElementById('under-construction');
+            el.style.display = 'block';
+            var oldClass = show ? 'start' : 'end';
+            var newClass = !show ? 'start' : 'end';
+            var targetTagNames = ['div'];
+
+            this.totalTransitionsEnded = 0;
+            if (this.addedTransitionEndListener === false) {
+              window.PabloCamara.Helpers.callbackOnChildrenWithClass(el, targetTagNames, oldClass, function (child) {
+
+                var listener = function (event) {
+                  if (child.classList.contains('start')) {
+                    window.PabloCamara.Components.Language.totalTransitionsEnded++;
+                    // TODO: Grab total transitions dynamically
+                    if (window.PabloCamara.Components.Language.totalTransitionsEnded >= 1) {
+                      el.style.display = 'none';
+                    }
+                  }
+                };
+
+                child.addEventListener('transitionend', listener);
+
+
+              });
+              this.addedTransitionEndListener = true;
+            }
+
+            setTimeout(function () {
+              window.PabloCamara.Helpers.toggleClassFromChildren(el, targetTagNames, oldClass, newClass);
+            }, 100);
+
+
+
+          },
         }
       },
       Views: {
         homePage: function (show) {
           window.PabloCamara.Components.WelcomeBar.animateWelcomeBar(show);
           window.PabloCamara.Components.SectionList.animateSectionList(show);
+        },
+        underConstruction: function (show) {
+          window.PabloCamara.Components.WelcomeBar.animateWelcomeBar(show);
+          window.PabloCamara.Components.UnderConstruction.animate(show);
         }
       },
       ViewRouter: {
@@ -359,6 +403,11 @@
           // TODO: View not found 404 alert
         },
         call: function (viewName, viewParam) {
+
+          if(window.PabloCamara.isUnderConstruction){
+            viewName = 'underConstruction';
+            viewParam = true;
+          }
 
           if (window.PabloCamara.Views.hasOwnProperty(viewName)
             && typeof window.PabloCamara.Views[viewName] === 'function') {
@@ -496,12 +545,21 @@
     window.PabloCamara.Components.Header.animateName();
     window.PabloCamara.Components.Loading.start();
 
-    if (null === window.PabloCamara.Components.Language.getLang()) {
-      window.PabloCamara.Components.Language.setFlagsLoadedCallback(function () {
-        window.PabloCamara.Components.Loading.end();
+    
+    window.PabloCamara.Components.Language.setFlagsLoadedCallback(function () {
+      window.PabloCamara.Components.Loading.end();
+
+      if (null === window.PabloCamara.Components.Language.getLang()) {
         window.PabloCamara.Components.Language.animateLanguageSelection(true);
-      });
-    }
+        return;
+      }
+
+      if(true === window.PabloCamara.isUnderConstruction){
+        window.PabloCamara.ViewRouter.routeAfterLanguageIsSelected('underConstruction',true);
+      }
+      
+    });
+    
   </script>
 
   <!-- Preloading images: start -->
@@ -579,6 +637,10 @@
 
   <script type="text/javascript">
     (function () {
+      if (true === window.PabloCamara.isUnderConstruction) {
+        return;
+      }
+
       for (var pic = 4; pic <= 9; pic++) {
         var elId = 'preload-img-' + pic;
         document.getElementById(elId).src = document.getElementById(elId).getAttribute('data-src');
@@ -591,6 +653,14 @@
     <div class="container">
       <div class="welcome-string start dts" data-dts-id="welcome-string"></div>
       <img id="language-toggle-flag" class="load-language-toggle-flag start" />
+    </div>
+  </div>
+
+  <div id="under-construction" style="display: none;">
+    <div class="opacity-animation start">
+      <h2 class="dts" data-dts-id="under_construction"></h2>
+      <p class="dts" data-dts-id="return_later"></p>
+      <small class="dts" data-dts-id="contact_if_needed"></small>
     </div>
   </div>
 
@@ -629,10 +699,14 @@
   </div>
 
   <script type="text/javascript">
+
     document.body.onload = function () {
       window.PabloCamara._hasBodyLoaded = true;
       window.PabloCamara.Components.Loading.end();
-      window.PabloCamara.ViewRouter.routeAfterLanguageIsSelected('homePage', true);
+
+      if (false === window.PabloCamara.isUnderConstruction) {
+        window.PabloCamara.ViewRouter.routeAfterLanguageIsSelected('homePage', true);
+      }
     };
   </script>
 </body>
