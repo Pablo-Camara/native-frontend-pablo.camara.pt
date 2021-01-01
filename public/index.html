@@ -27,6 +27,7 @@
   <script type="text/javascript">
 
     window.PabloCamara = {
+      _hasBodyLoaded: false,
       Helpers: {
         toggleClassFromChildren: function (element, childrenTagNames, oldClass, newClass, extraOptions) {
           var totalReplaces = 0;
@@ -107,22 +108,22 @@
           translationStrings: null,
           currentLanguage: null,
           flagImgsLoaded: 0,
-          flagImgLoaded: function(){
+          flagImgLoaded: function () {
             this.flagImgsLoaded++;
 
             var totalFlags = 0;
             var lang;
-            for(lang in this.loadingStrings){
+            for (lang in this.loadingStrings) {
               totalFlags++;
             }
 
-            if(this.flagImgsLoaded === totalFlags){
-              if(typeof this.flagsLoadedCallback === 'function'){
+            if (this.flagImgsLoaded === totalFlags) {
+              if (typeof this.flagsLoadedCallback === 'function') {
                 this.flagsLoadedCallback();
               }
             }
           },
-          setFlagsLoadedCallback: function(callback){
+          setFlagsLoadedCallback: function (callback) {
             this.flagsLoadedCallback = callback;
           },
           getLang: function () {
@@ -204,6 +205,9 @@
                     // TODO: Grab total transitions dynamically
                     if (window.PabloCamara.Components.Language.totalTransitionsEnded >= 25) {
                       languageSelector.style.display = 'none';
+                      if (false === window.PabloCamara._hasBodyLoaded) {
+                        window.PabloCamara.Components.Loading.start();
+                      }
                     }
                   }
 
@@ -376,10 +380,21 @@
           this.call(viewName, viewParam);
         },
         routeWithLanguage(lang, viewName, viewParam) {
-          window.PabloCamara.Components.Language.animateLanguageSelection(false);
           if (window.PabloCamara.Components.Language.setupLang(lang)) {
-            this.call(viewName, viewParam);
+            window.PabloCamara.Components.Language.animateLanguageSelection(false);
+            if (false === window.PabloCamara._hasBodyLoaded) {
+              document.body.onload = function () {
+                window.PabloCamara._hasBodyLoaded = true;
+                window.PabloCamara.Components.Loading.end();
+                window.PabloCamara.ViewRouter.call(viewName, viewParam);
+              };
+              return;
+            }
+            if (window.PabloCamara.Components.Language.setupLang(lang)) {
+              window.PabloCamara.ViewRouter.call(viewName, viewParam);
+            }
           }
+
         },
       }
     };
@@ -482,9 +497,9 @@
     window.PabloCamara.Components.Loading.start();
 
     if (null === window.PabloCamara.Components.Language.getLang()) {
-      window.PabloCamara.Components.Language.setFlagsLoadedCallback(function(){
-          window.PabloCamara.Components.Loading.end();
-          window.PabloCamara.Components.Language.animateLanguageSelection(true);
+      window.PabloCamara.Components.Language.setFlagsLoadedCallback(function () {
+        window.PabloCamara.Components.Loading.end();
+        window.PabloCamara.Components.Language.animateLanguageSelection(true);
       });
     }
   </script>
@@ -492,10 +507,22 @@
   <!-- Preloading images: start -->
   <div
     style="width:1px; height:1px; visibility:hidden; overflow:hidden; position: absolute; top: -100px; left: -100px;">
-    <img src="assets/img/flags/flag-pt.png" onload="window.PabloCamara.Components.Language.flagImgLoaded()"/>
-    <img src="assets/img/flags/flag-en.png" onload="window.PabloCamara.Components.Language.flagImgLoaded()"/>
-    <img src="assets/img/flags/flag-es.png" onload="window.PabloCamara.Components.Language.flagImgLoaded()"/>
+    <img src="#" id="preload-img-1" data-src="assets/img/flags/flag-pt.png" />
+    <img src="#" id="preload-img-2" data-src="assets/img/flags/flag-en.png" />
+    <img src="#" id="preload-img-3" data-src="assets/img/flags/flag-es.png" />
   </div>
+
+  <script type="text/javascript">
+    (function () {
+      for (var pic = 1; pic <= 3; pic++) {
+        var elId = 'preload-img-' + pic;
+        document.getElementById(elId).onload = function () {
+          window.PabloCamara.Components.Language.flagImgLoaded();
+        };
+        document.getElementById(elId).src = document.getElementById(elId).getAttribute('data-src');
+      }
+    })();
+  </script>
   <!-- Preloading images: end -->
 
 
@@ -534,7 +561,7 @@
   </div>
 
   <script type="text/javascript">
-    if(null !== window.PabloCamara.Components.Language.getLang()){
+    if (null !== window.PabloCamara.Components.Language.getLang()) {
       window.PabloCamara.Components.Loading.start();
     }
   </script>
@@ -542,13 +569,22 @@
   <div
     style="width:1px; height:1px; visibility:hidden; overflow:hidden; position: absolute; top: -100px; left: -100px;">
 
-    <img src="assets/img/section-items/biography.png" />
-    <img src="assets/img/section-items/projects.png" />
-    <img src="assets/img/section-items/services.png" />
-    <img src="assets/img/section-items/blog.png" />
-    <img src="assets/img/section-items/portal.png" />
-    <img src="assets/img/section-items/contactme.png" />
+    <img id="preload-img-4" src="#" data-src="assets/img/section-items/biography.png" />
+    <img id="preload-img-5" src="#" data-src="assets/img/section-items/projects.png" />
+    <img id="preload-img-6" src="#" data-src="assets/img/section-items/services.png" />
+    <img id="preload-img-7" src="#" data-src="assets/img/section-items/blog.png" />
+    <img id="preload-img-8" src="#" data-src="assets/img/section-items/portal.png" />
+    <img id="preload-img-9" src="#" data-src="assets/img/section-items/contactme.png" />
   </div>
+
+  <script type="text/javascript">
+    (function () {
+      for (var pic = 4; pic <= 9; pic++) {
+        var elId = 'preload-img-' + pic;
+        document.getElementById(elId).src = document.getElementById(elId).getAttribute('data-src');
+      }
+    })();
+  </script>
   <!-- Preloading images: end -->
 
   <div id="welcome-bar" style="display: none;">
@@ -593,7 +629,8 @@
   </div>
 
   <script type="text/javascript">
-    document.body.onload = function(){
+    document.body.onload = function () {
+      window.PabloCamara._hasBodyLoaded = true;
       window.PabloCamara.Components.Loading.end();
       window.PabloCamara.ViewRouter.routeAfterLanguageIsSelected('homePage', true);
     };
