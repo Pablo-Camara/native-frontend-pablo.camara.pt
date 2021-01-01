@@ -18,5 +18,20 @@
         "pt": "Serviços",
         "en": "Services",
         "es": "Servicios"
+    },
+    "blog": {
+        "pt": "Blogue",
+        "en": "Blog",
+        "es": "Blog"
+    },
+    "web_portal": {
+        "pt": "Portal Web",
+        "en": "Web Portal",
+        "es": "Portal Web"
+    },
+    "contact_me": {
+        "pt": "Contate-me",
+        "en": "Contact me",
+        "es": "Contáctame"
     }
 }

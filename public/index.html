@@ -11,11 +11,17 @@
     body {
       font-family: Arial, sans-serif;
     }
+
+    #loading {
+      text-align: center;
+      padding: 10px;
+      color: #00202b;
+    }
   </style>
 
-  <link rel="preload" href="assets/json/translations_en.json" as="fetch" type="application/json" crossorigin/>
-  <link rel="preload" href="assets/json/translations_es.json" as="fetch" type="application/json" crossorigin/>
-  <link rel="preload" href="assets/json/translations_pt.json" as="fetch" type="application/json" crossorigin/>
+  <link rel="preload" href="assets/json/translations_en.json" as="fetch" type="application/json" crossorigin />
+  <link rel="preload" href="assets/json/translations_es.json" as="fetch" type="application/json" crossorigin />
+  <link rel="preload" href="assets/json/translations_pt.json" as="fetch" type="application/json" crossorigin />
   <link rel="stylesheet" href="assets/css/main.css" />
 
   <script type="text/javascript">
@@ -52,6 +58,50 @@
         }
       },
       Components: {
+        Loading: {
+          loadingStrings: {
+            "pt": "Carregando",
+            "en": "Loading",
+            "es": "Cargando"
+          },
+          start: function () {
+            if(null === window.PabloCamara.Components.Language.getLang()){
+              return;
+            }
+
+            var el = document.getElementById('loading');
+            el.style.display = 'block';
+
+            this.dotCount = 0;
+            clearInterval(this.loadingInterval);
+            this.loadingInterval = setInterval(function () {
+              if (window.PabloCamara.Components.Loading.dotCount >= 3) {
+                window.PabloCamara.Components.Loading.dotCount = 0;
+              }
+
+              var dots = '';
+              for (var dc = 0; dc <= window.PabloCamara.Components.Loading.dotCount; dc++) {
+                dots += '.';
+              }
+
+              var el = document.getElementById('loading');
+              var lang = window.PabloCamara.Components.Language.getLang();
+              var loadingStr = window.PabloCamara.Components.Loading.loadingStrings[lang];
+
+              el.innerText = loadingStr + dots;
+
+              window.PabloCamara.Components.Loading.dotCount++;
+            }, 300);
+
+          },
+          end: function () {
+            var el = document.getElementById('loading');
+            el.style.display = 'none';
+            this.dotCount = 0;
+            clearInterval(this.loadingInterval);
+          }
+
+        },
         Language: {
           addedTransitionEndListener: false,
           translationStrings: null,
@@ -70,6 +120,8 @@
           },
 
           getTranslations: function (callback) {
+
+
             var xhr = new XMLHttpRequest();
             xhr.onload = function () {
 
@@ -129,15 +181,15 @@
               window.PabloCamara.Helpers.callbackOnChildrenWithClass(languageSelector, targetTagNames, oldClass, function (child) {
 
                 var listener = function (event) {
-                  if(child.classList.contains('start')){
+                  if (child.classList.contains('start')) {
                     window.PabloCamara.Components.Language.totalTransitionsEnded++;
                     // TODO: Grab total transitions dynamically
-                    if(window.PabloCamara.Components.Language.totalTransitionsEnded >= 25){
+                    if (window.PabloCamara.Components.Language.totalTransitionsEnded >= 25) {
                       languageSelector.style.display = 'none';
                     }
                   }
-                  
-                  
+
+
                 };
 
                 child.addEventListener('transitionend', listener);
@@ -193,14 +245,14 @@
               window.PabloCamara.Helpers.callbackOnChildrenWithClass(welcomeBar, targetTagNames, oldClass, function (child) {
 
                 var listener = function (event) {
-                  if(child.classList.contains('start')){
+                  if (child.classList.contains('start')) {
                     window.PabloCamara.Components.WelcomeBar.totalTransitionsEnded++;
-                    if(window.PabloCamara.Components.WelcomeBar.totalTransitionsEnded){
+                    if (window.PabloCamara.Components.WelcomeBar.totalTransitionsEnded) {
                       welcomeBar.style.display = 'none';
                     }
                   }
-                  
-                  
+
+
                 };
 
                 child.addEventListener('transitionend', listener);
@@ -210,10 +262,10 @@
               this.addedTransitionEndListener = true;
             }
 
-            setTimeout(function(){
+            setTimeout(function () {
               window.PabloCamara.Helpers.toggleClassFromChildren(welcomeBar, targetTagNames, oldClass, newClass);
-            },100);
-            
+            }, 100);
+
           },
 
         },
@@ -238,14 +290,15 @@
               window.PabloCamara.Helpers.callbackOnChildrenWithClass(sectionList, targetTagNames, oldClass, function (child) {
 
                 var listener = function (event) {
-                  if(child.classList.contains('start')){
+                  if (child.classList.contains('start')) {
                     window.PabloCamara.Components.SectionList.totalTransitionsEnded++;
-                    if(window.PabloCamara.Components.SectionList.totalTransitionsEnded >= 15){
+                    if (window.PabloCamara.Components.SectionList.totalTransitionsEnded >= 24) {
                       sectionList.style.display = 'none';
                     }
+                    //console.log(window.PabloCamara.Components.SectionList.totalTransitionsEnded);
                   }
-                  
-                  
+
+
                 };
 
                 child.addEventListener('transitionend', listener);
@@ -284,18 +337,20 @@
           // TODO: View not found 404 alert
         },
         call: function (viewName, viewParam) {
+
           if (window.PabloCamara.Views.hasOwnProperty(viewName)
-            && typeof window.PabloCamara.Views[viewName] === 'function') {
-            
-              window.PabloCamara.ViewRouter.visibleView = viewName;
-              window.PabloCamara.Views[viewName](viewParam);
-            
+          && typeof window.PabloCamara.Views[viewName] === 'function') {
+
+            window.PabloCamara.ViewRouter.visibleView = viewName;
+            window.PabloCamara.Views[viewName](viewParam);
+
             return;
           }
+
           // TODO: View not found 404 alert
         },
         routeAfterLanguageIsSelected: function (viewName, viewParam) {
-          window.PabloCamara.Components.Header.animateName();
+          
           if (false === window.PabloCamara.Components.Language.setupLang()) {
             window.PabloCamara.Components.Language.animateLanguageSelection(true);
             return;
@@ -310,23 +365,13 @@
         },
       }
     };
-
+    
   </script>
 
 
 </head>
 
 <body>
-  <!-- Preloading images -->
-  <div style="width:1px; height:1px; visibility:hidden; overflow:hidden; position: absolute; top: -100px; left: -100px;">
-    <img src="assets/img/flags/flag-pt.png" />
-    <img src="assets/img/flags/flag-en.png" />
-    <img src="assets/img/flags/flag-es.png" />
-    <img src="assets/img/section-items/biography.png" />
-    <img src="assets/img/section-items/projects.png" />
-    <img src="assets/img/section-items/services.png" />
-  </div>
-
 
   <div id="top-section">
     <div id="pablocamara">
@@ -412,6 +457,24 @@
     </div>
   </div>
 
+  <div id="loading" style="display: none;"></div>
+  <script type="text/javascript">
+    window.PabloCamara.Components.Loading.start();
+  </script>
+
+  <!-- Preloading images -->
+  <div
+    style="width:1px; height:1px; visibility:hidden; overflow:hidden; position: absolute; top: -100px; left: -100px;">
+    <img src="assets/img/flags/flag-pt.png" />
+    <img src="assets/img/flags/flag-en.png" />
+    <img src="assets/img/flags/flag-es.png" />
+    <img src="assets/img/section-items/biography.png" />
+    <img src="assets/img/section-items/projects.png" />
+    <img src="assets/img/section-items/services.png" />
+    <img src="assets/img/section-items/blog.png" />
+    <img src="assets/img/section-items/portal.png" />
+    <img src="assets/img/section-items/contactme.png" />
+  </div>
 
   <div id="welcome-bar" style="display: none;">
     <div class="container">
@@ -471,10 +534,33 @@
       <div class="image"><img class="start" src="assets/img/section-items/services.png" /></div>
       <div class="name start dts" data-dts-id="services"></div>
     </div>
+
+    <div class="section-item start">
+      <div class="image"><img class="start" src="assets/img/section-items/blog.png"></div>
+      <div class="name start dts" data-dts-id="blog"></div>
+    </div>
+
+    <div class="section-item start">
+      <div class="image"><img class="start" src="assets/img/section-items/portal.png">
+      </div>
+      <div class="name start dts" data-dts-id="web_portal"></div>
+    </div>
+
+    <div class="section-item start">
+      <div class="image"><img class="start" src="assets/img/section-items/contactme.png"></div>
+      <div class="name start dts" data-dts-id="contact_me"></div>
+    </div>
+  </div>
   </div>
 
   <script type="text/javascript">
-    window.PabloCamara.ViewRouter.routeAfterLanguageIsSelected('homePage', true);
+
+    window.PabloCamara.Components.Header.animateName();
+    document.body.onload = function(){
+      window.PabloCamara.Components.Loading.end();
+      window.PabloCamara.ViewRouter.routeAfterLanguageIsSelected('homePage', true);
+    };
+    
 
 
   </script>
