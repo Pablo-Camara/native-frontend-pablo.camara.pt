@@ -44,7 +44,7 @@
           }
           return totalReplaces;
         },
-        callbackOnChildrenWithClass(element, childrenTagNames, className, callback) {
+        callbackOnChildrenWithClass: function(element, childrenTagNames, className, callback) {
           var totalAdded = 0;
           for (var x = 0; x < childrenTagNames.length; x++) {
             var childrenToChange = element.getElementsByTagName(childrenTagNames[x]);
