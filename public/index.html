@@ -428,7 +428,7 @@
           }
           this.call(viewName, viewParam);
         },
-        routeWithLanguage(lang, viewName, viewParam) {
+        routeWithLanguage: function(lang, viewName, viewParam) {
           if (window.PabloCamara.Components.Language.setupLang(lang)) {
             window.PabloCamara.Components.Language.animateLanguageSelection(false);
             if (false === window.PabloCamara._hasBodyLoaded) {
