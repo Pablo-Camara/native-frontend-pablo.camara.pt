@@ -26,6 +26,18 @@
 
   <script type="text/javascript">
 
+    // make classList.replace work in IE11
+    DOMTokenList.prototype.replace = function (a, b) {
+        var arr = Array(this);
+        var regex = new RegExp(arr.join("|").replace(/ /g, "|"), "i");
+        if (!regex.test(a)) {
+            return this;
+        }
+        this.remove(a);
+        this.add(b);
+        return this;
+    }
+
     window.PabloCamara = {
       isUnderConstruction: true,
       _hasBodyLoaded: false,
