@@ -626,7 +626,7 @@
     </div>
 
     <div id="lang-copyright" class="load-copyright start">
-      Copyright @ 2020
+      Copyright @ <?= date('Y'); ?>
     </div>
   </div>
 
