@@ -979,63 +979,10 @@ html,body {
     }
 }
 
-#welcome-bar {
-  height: 30px;
-  position: absolute;
-  width: 100%;
-
-  .container {
-    width: 300px;
-    margin: auto;
-    position: relative;
-  }
-
-  .welcome-string {
-      padding: 4px 0;
-      color: #00202b;
-      transition: opacity 2.3s;
-
-      &.start {
-        opacity: 0;
-        transition-timing-function: ease-out;
-        
-      }
-
-      &.end {
-        opacity: 1;
-        transition-timing-function: ease-in;
-      }
-  }
-
-  #language-toggle-flag {
-      width: 30px;
-      position: absolute;
-      right: 0px;
-      top: 4px;
-      cursor: hand;
-      cursor: pointer;
-
-      &.load-language-toggle-flag {
-        transition: opacity 2.3s;
-
-        &.start {
-          opacity: 0;  
-          transition-timing-function: ease-out;
-        }
-
-        &.end {
-          opacity: 1;
-          transition-timing-function: ease-out;
-        }
-
-      }
-  }
-}
-
-#under-construction {
+#under-maintenance {
   color: #00202B;
   text-align: center;
-  padding: 25px 0;
+  padding: 10px 0;
 
   .opacity-animation  {
     transition-delay: 2s;

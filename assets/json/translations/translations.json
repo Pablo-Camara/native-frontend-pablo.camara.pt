@@ -1,23 +1,18 @@
 {
-    "welcome-string": {
-        "pt": "Seja bem-vindo!",
-        "en": "Welcome!",
-        "es": "Bienvenido!"
-    },
-    "under_construction": {
-        "pt": "Site em construção",
-        "en": "Website under construction",
-        "es": "Página web en construcción"
+    "under_maintenance": {
+        "pt": "Site em manutenção",
+        "en": "Website under maintenance",
+        "es": "Sitio web en mantenimiento."
     },
     "return_later": {
-        "pt": "Por favor volte outra hora!",
+        "pt": "Por favor volte mais tarde!",
         "en": "Please come back some other time!",
         "es": "Por favor, vuelva en otro momento!"
     },
     "contact_if_needed": {
-        "pt": "Caso seja realmente necessário,<br/>sinta-se à vontade para me enviar um email:<br/><a href=\"mailto:pablo.camara.pt@gmail.com\">clicando aqui</a>",
-        "en": "If really necessary,<br/>feel free to send me an email:<br/><a href=\"mailto:pablo.camara.pt@gmail.com\">by clicking here</a>",
-        "es": "Si es realmente necesario,<br/>no dude en enviarme un correo electrónico:<br/><a href=\"mailto:pablo.camara.pt@gmail.com\">haciendo clic aquí</a>"
+        "pt": "ou então <a href=\"mailto:pablo.camara.pt@gmail.com\">envie-me um email</a>",
+        "en": "or <a href=\"mailto:pablo.camara.pt@gmail.com\">send me an email</a>",
+        "es": "o <a href=\"mailto:pablo.camara.pt@gmail.com\">envíame un correo electrónico</a>"
     },
     "biography": {
         "pt": "Biografia",

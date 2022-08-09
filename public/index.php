@@ -12,6 +12,10 @@
       font-family: Arial, sans-serif;
     }
 
+    body.with-default-bg {
+      background-color: #00202B;
+    }
+
     #loading {
       text-align: center;
       padding: 10px;
@@ -39,7 +43,7 @@
     }
 
     window.PabloCamara = {
-      isUnderConstruction: true,
+      isUnderMaintenance: true,
       _hasBodyLoaded: false,
       Helpers: {
         toggleClassFromChildren: function (element, childrenTagNames, oldClass, newClass, extraOptions) {
@@ -183,13 +187,14 @@
 
           setLanguageTogglerCurrentFlag: function () {
             var toggleFlag = document.getElementById('language-toggle-flag');
-            toggleFlag.setAttribute('src', 'assets/img/flags/flag-' + window.PabloCamara.Components.Language.currentLanguage + '.png');
 
-            toggleFlag.onclick = function () {
-              window.PabloCamara.ViewRouter.hideVisibleView();
-              window.PabloCamara.Components.Language.animateLanguageSelection(true);
-            };
-
+            if (toggleFlag) {
+              toggleFlag.setAttribute('src', 'assets/img/flags/flag-' + window.PabloCamara.Components.Language.currentLanguage + '.png');
+              toggleFlag.onclick = function () {
+                window.PabloCamara.ViewRouter.hideVisibleView();
+                window.PabloCamara.Components.Language.animateLanguageSelection(true);
+              };
+            }
           },
 
           setLang: function (lang) {
@@ -264,46 +269,6 @@
             }, 100);
           }
         },
-        WelcomeBar: {
-          addedTransitionEndListener: false,
-          animateWelcomeBar: function (show) {
-            var welcomeBar = document.getElementById('welcome-bar');
-            welcomeBar.style.display = 'block';
-
-            var oldClass = show ? 'start' : 'end';
-            var newClass = !show ? 'start' : 'end';
-
-            var targetTagNames = ['div', 'img'];
-
-            this.totalTransitionsEnded = 0;
-            if (this.addedTransitionEndListener === false) {
-              window.PabloCamara.Helpers.callbackOnChildrenWithClass(welcomeBar, targetTagNames, oldClass, function (child) {
-
-                var listener = function (event) {
-                  if (child.classList.contains('start')) {
-                    window.PabloCamara.Components.WelcomeBar.totalTransitionsEnded++;
-                    if (window.PabloCamara.Components.WelcomeBar.totalTransitionsEnded) {
-                      welcomeBar.style.display = 'none';
-                    }
-                  }
-
-
-                };
-
-                child.addEventListener('transitionend', listener);
-
-
-              });
-              this.addedTransitionEndListener = true;
-            }
-
-            setTimeout(function () {
-              window.PabloCamara.Helpers.toggleClassFromChildren(welcomeBar, targetTagNames, oldClass, newClass);
-            }, 100);
-
-          },
-
-        },
         SectionList: {
           addedTransitionEndListener: false,
           hide: function () {
@@ -353,11 +318,11 @@
           }
 
         },
-        UnderConstruction: {
+        UnderMaintenance: {
           addedTransitionEndListener: false,
           animate: function (show) {
 
-            var el = document.getElementById('under-construction');
+            var el = document.getElementById('under-maintenance');
             el.style.display = 'block';
             var oldClass = show ? 'start' : 'end';
             var newClass = !show ? 'start' : 'end';
@@ -395,12 +360,11 @@
       },
       Views: {
         homePage: function (show) {
-          window.PabloCamara.Components.WelcomeBar.animateWelcomeBar(show);
+          
           window.PabloCamara.Components.SectionList.animateSectionList(show);
         },
-        underConstruction: function (show) {
-          window.PabloCamara.Components.WelcomeBar.animateWelcomeBar(show);
-          window.PabloCamara.Components.UnderConstruction.animate(show);
+        underMaintenance: function (show) {
+          window.PabloCamara.Components.UnderMaintenance.animate(show);
         }
       },
       ViewRouter: {
@@ -416,8 +380,8 @@
         },
         call: function (viewName, viewParam) {
 
-          if(window.PabloCamara.isUnderConstruction){
-            viewName = 'underConstruction';
+          if(window.PabloCamara.isUnderMaintenance){
+            viewName = 'underMaintenance';
             viewParam = true;
           }
 
@@ -566,8 +530,8 @@
         return;
       }
 
-      if(true === window.PabloCamara.isUnderConstruction){
-        window.PabloCamara.ViewRouter.routeAfterLanguageIsSelected('underConstruction',true);
+      if(true === window.PabloCamara.isUnderMaintenance){
+        window.PabloCamara.ViewRouter.routeAfterLanguageIsSelected('underMaintenance',true);
       }
       
     });
@@ -649,7 +613,7 @@
 
   <script type="text/javascript">
     (function () {
-      if (true === window.PabloCamara.isUnderConstruction) {
+      if (true === window.PabloCamara.isUnderMaintenance) {
         return;
       }
 
@@ -661,16 +625,10 @@
   </script>
   <!-- Preloading images: end -->
 
-  <div id="welcome-bar" style="display: none;">
-    <div class="container">
-      <div class="welcome-string start dts" data-dts-id="welcome-string"></div>
-      <img id="language-toggle-flag" class="load-language-toggle-flag start" />
-    </div>
-  </div>
 
-  <div id="under-construction" style="display: none;">
+  <div id="under-maintenance" style="display: none;">
     <div class="opacity-animation start">
-      <h2 class="dts" data-dts-id="under_construction"></h2>
+      <h2 class="dts" data-dts-id="under_maintenance"></h2>
       <p class="dts" data-dts-id="return_later"></p>
       <small class="dts" data-dts-id="contact_if_needed"></small>
     </div>
@@ -716,7 +674,7 @@
       window.PabloCamara._hasBodyLoaded = true;
       window.PabloCamara.Components.Loading.end();
 
-      if (false === window.PabloCamara.isUnderConstruction) {
+      if (false === window.PabloCamara.isUnderMaintenance) {
         window.PabloCamara.ViewRouter.routeAfterLanguageIsSelected('homePage', true);
       }
     };
