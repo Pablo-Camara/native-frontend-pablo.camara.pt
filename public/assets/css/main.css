@@ -815,21 +815,69 @@ body {
   font-size: 16px;
   color: #00202b;
   width: 320px;
-}
-#language-selector #lang-copyright.load-copyright {
-  transition: opacity 1s;
-  transition-timing-function: ease-in;
-}
-#language-selector #lang-copyright.load-copyright.start {
-  opacity: 0;
-}
-#language-selector #lang-copyright.load-copyright.end {
-  opacity: 1;
-  transition-delay: 3.8s;
+  /*&.load-copyright {
+
+        transition: opacity 1s;
+        transition-timing-function: ease-in;
+
+        &.start {
+          opacity: 0;
+        }
+
+        &.end {
+          opacity: 1;
+          transition-delay: 3.8s;
+        }
+        
+    }*/
 }
 #language-selector .language .flag img {
   width: 30px;
   /* backup flag transitions paste here */
+  /*&.load-pt-flag {
+                will-change: opacity;
+                transition: opacity 3s;
+                transition-timing-function: ease-in-out;
+
+                &.start {
+                  opacity: 0;
+                }
+                
+                &.end {
+                  opacity: 1;
+                  transition-delay: 3.5s;
+                }
+            }
+
+            &.load-en-flag {
+              will-change: opacity;
+              transition: opacity 3s;
+              transition-timing-function: ease-in-out;
+    
+              &.start {
+                opacity: 0;
+              }
+              
+              &.end {
+                opacity: 1;
+                transition-delay: 3.5s;
+              }
+            }
+
+            &.load-es-flag {
+              will-change: opacity;
+              transition: opacity 2s;
+              transition-timing-function: ease-in-out;
+    
+              &.start {
+                opacity: 0;
+              }
+            
+              &.end {
+                opacity: 1;
+                transition-delay: 4s;
+              } 
+            }*/
 }
 #language-selector .language .v-connector,
 #language-selector .language .h-connector,

@@ -1003,7 +1003,8 @@ html,body {
       width: 320px;
 
       // Copyright:
-      &.load-copyright {
+      // copyright opacity transitions bk here
+      /*&.load-copyright {
 
         transition: opacity 1s;
         transition-timing-function: ease-in;
@@ -1017,7 +1018,7 @@ html,body {
           transition-delay: 3.8s;
         }
         
-    }
+    }*/
   }
 
   .language {
@@ -1026,6 +1027,50 @@ html,body {
               width: 30px;
 
               /* backup flag transitions paste here */
+              /*&.load-pt-flag {
+                will-change: opacity;
+                transition: opacity 3s;
+                transition-timing-function: ease-in-out;
+
+                &.start {
+                  opacity: 0;
+                }
+                
+                &.end {
+                  opacity: 1;
+                  transition-delay: 3.5s;
+                }
+            }
+
+            &.load-en-flag {
+              will-change: opacity;
+              transition: opacity 3s;
+              transition-timing-function: ease-in-out;
+    
+              &.start {
+                opacity: 0;
+              }
+              
+              &.end {
+                opacity: 1;
+                transition-delay: 3.5s;
+              }
+            }
+
+            &.load-es-flag {
+              will-change: opacity;
+              transition: opacity 2s;
+              transition-timing-function: ease-in-out;
+    
+              &.start {
+                opacity: 0;
+              }
+            
+              &.end {
+                opacity: 1;
+                transition-delay: 4s;
+              } 
+            }*/
           }
       }
 

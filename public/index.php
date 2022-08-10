@@ -22,6 +22,16 @@
       color: #00202b;
     }
 
+    /* putting these opacity transitions css here
+       because of a bug in google chrome
+       that would show images with full opacity on the first load
+       in incognito mode, next loads would be fine
+       but I assume first load is the more important 
+       so this is the fix.
+       
+       also for the copyright text,
+       opacity transitions has bugs in chrome.
+     */
     #language-selector .language .flag img.load-pt-flag {
       will-change: opacity;
       transition: opacity 3s;
@@ -58,6 +68,20 @@
       opacity: 1;
       transition-delay: 4s;
     }
+
+    /* copyright opacity transitions */
+    #language-selector #lang-copyright.load-copyright {
+      transition: opacity 1s;
+      transition-timing-function: ease-in;
+    }
+    #language-selector #lang-copyright.load-copyright.start {
+      opacity: 0;
+    }
+    #language-selector #lang-copyright.load-copyright.end {
+      opacity: 1;
+      transition-delay: 3.8s;
+    }
+
   </style>
 
   <link rel="preload" href="assets/json/translations_en.json" as="fetch" type="application/json" crossorigin />
