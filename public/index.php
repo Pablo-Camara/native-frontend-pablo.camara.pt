@@ -21,12 +21,49 @@
       padding: 10px;
       color: #00202b;
     }
+
+    #language-selector .language .flag img.load-pt-flag {
+      will-change: opacity;
+      transition: opacity 3s;
+      transition-timing-function: ease-in-out;
+    }
+    #language-selector .language .flag img.load-pt-flag.start {
+      opacity: 0;
+    }
+    #language-selector .language .flag img.load-pt-flag.end {
+      opacity: 1;
+      transition-delay: 3.5s;
+    }
+    #language-selector .language .flag img.load-en-flag {
+      will-change: opacity;
+      transition: opacity 3s;
+      transition-timing-function: ease-in-out;
+    }
+    #language-selector .language .flag img.load-en-flag.start {
+      opacity: 0;
+    }
+    #language-selector .language .flag img.load-en-flag.end {
+      opacity: 1;
+      transition-delay: 3.5s;
+    }
+    #language-selector .language .flag img.load-es-flag {
+      will-change: opacity;
+      transition: opacity 2s;
+      transition-timing-function: ease-in-out;
+    }
+    #language-selector .language .flag img.load-es-flag.start {
+      opacity: 0;
+    }
+    #language-selector .language .flag img.load-es-flag.end {
+      opacity: 1;
+      transition-delay: 4s;
+    }
   </style>
 
   <link rel="preload" href="assets/json/translations_en.json" as="fetch" type="application/json" crossorigin />
   <link rel="preload" href="assets/json/translations_es.json" as="fetch" type="application/json" crossorigin />
   <link rel="preload" href="assets/json/translations_pt.json" as="fetch" type="application/json" crossorigin />
-  <link rel="stylesheet" href="assets/css/main.css?v=0.0.0004" />
+  <link rel="stylesheet" href="assets/css/main.css?v=0.0.0005" />
 
   <script type="text/javascript">
 
