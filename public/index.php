@@ -87,7 +87,7 @@
   <link rel="preload" href="assets/json/translations_en.json" as="fetch" type="application/json" crossorigin />
   <link rel="preload" href="assets/json/translations_es.json" as="fetch" type="application/json" crossorigin />
   <link rel="preload" href="assets/json/translations_pt.json" as="fetch" type="application/json" crossorigin />
-  <link rel="stylesheet" href="assets/css/main.css?v=0.0.0005" />
+  <link rel="stylesheet" href="assets/css/main.css?v=0.0.0006" />
 
   <script type="text/javascript">
 
