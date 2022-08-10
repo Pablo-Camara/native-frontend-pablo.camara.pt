@@ -1028,14 +1028,13 @@ html,body {
               &.load-pt-flag {
 
                 &.start {
-                  visibility: hidden;
+                  will-change: opacity;
                   opacity: 0;
                   transition: opacity 3s;
                   transition-timing-function: ease-in-out;
                 }
                 
                 &.end {
-                  visibility: visible;
                   opacity: 1;
                   transition: opacity 3s;
                   transition-timing-function: ease-in-out;
@@ -1044,6 +1043,7 @@ html,body {
             }
 
             &.load-en-flag {
+              will-change: opacity;
               transition: opacity 3s;
               transition-timing-function: ease-in-out;
     
@@ -1058,6 +1058,7 @@ html,body {
             }
 
             &.load-es-flag {
+              will-change: opacity;
               transition: opacity 2s;
               transition-timing-function: ease-in-out;
     

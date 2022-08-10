@@ -831,19 +831,19 @@ body {
   width: 30px;
 }
 #language-selector .language .flag img.load-pt-flag.start {
-  visibility: hidden;
+  will-change: opacity;
   opacity: 0;
   transition: opacity 3s;
   transition-timing-function: ease-in-out;
 }
 #language-selector .language .flag img.load-pt-flag.end {
-  visibility: visible;
   opacity: 1;
   transition: opacity 3s;
   transition-timing-function: ease-in-out;
   transition-delay: 3.5s;
 }
 #language-selector .language .flag img.load-en-flag {
+  will-change: opacity;
   transition: opacity 3s;
   transition-timing-function: ease-in-out;
 }
@@ -855,6 +855,7 @@ body {
   transition-delay: 3.5s;
 }
 #language-selector .language .flag img.load-es-flag {
+  will-change: opacity;
   transition: opacity 2s;
   transition-timing-function: ease-in-out;
 }
