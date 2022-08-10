@@ -830,16 +830,16 @@ body {
 #language-selector .language .flag img {
   width: 30px;
 }
-#language-selector .language .flag img.load-pt-flag.start {
+#language-selector .language .flag img.load-pt-flag {
   will-change: opacity;
-  opacity: 0;
   transition: opacity 3s;
   transition-timing-function: ease-in-out;
 }
+#language-selector .language .flag img.load-pt-flag.start {
+  opacity: 0;
+}
 #language-selector .language .flag img.load-pt-flag.end {
   opacity: 1;
-  transition: opacity 3s;
-  transition-timing-function: ease-in-out;
   transition-delay: 3.5s;
 }
 #language-selector .language .flag img.load-en-flag {

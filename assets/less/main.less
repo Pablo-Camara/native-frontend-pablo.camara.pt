@@ -1026,18 +1026,16 @@ html,body {
               width: 30px;
 
               &.load-pt-flag {
+                will-change: opacity;
+                transition: opacity 3s;
+                transition-timing-function: ease-in-out;
 
                 &.start {
-                  will-change: opacity;
                   opacity: 0;
-                  transition: opacity 3s;
-                  transition-timing-function: ease-in-out;
                 }
                 
                 &.end {
                   opacity: 1;
-                  transition: opacity 3s;
-                  transition-timing-function: ease-in-out;
                   transition-delay: 3.5s;
                 }
             }
