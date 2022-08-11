@@ -1,9 +1,4 @@
-<?php
-  if(isset($_GET['gibphpdata'])){
-    phpinfo();
-    die();
-  }
-?><!doctype html>
+<!doctype html>
 <html>
 
 <head>
