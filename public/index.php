@@ -1,4 +1,11 @@
-<!doctype html>
+<?php
+
+$requestUri = $_SERVER['REQUEST_URI'];
+
+$uriParts = explode('?', $requestUri);
+$route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
+
+?><!doctype html>
 <html>
 
 <head>
@@ -104,7 +111,7 @@
     }
 
     window.PabloCamara = {
-      isUnderMaintenance: true,
+      isUnderMaintenance: false,
       _hasBodyLoaded: false,
       Helpers: {
         toggleClassFromChildren: function (element, childrenTagNames, oldClass, newClass, extraOptions) {
@@ -253,20 +260,21 @@
               toggleFlag.setAttribute('src', 'assets/img/flags/flag-' + window.PabloCamara.Components.Language.currentLanguage + '.png');
               toggleFlag.onclick = function () {
                 window.PabloCamara.ViewRouter.hideVisibleView();
-                window.PabloCamara.Components.Language.animateLanguageSelection(true);
+                window.PabloCamara.Components.Language.animate(true);
               };
             }
           },
 
           setLang: function (lang) {
             this.currentLanguage = lang;
+            //TODO: Use cookie instead.
             localStorage.setItem('lang', lang);
             this.setLanguageTogglerCurrentFlag();
             //TODO: Save language in session AND/OR database
             this.translateStrings();
           },
 
-          animateLanguageSelection: function (show) {
+          animate: function (show) {
 
             var languageSelector = document.getElementById('language-selector');
             languageSelector.style.display = 'block';
@@ -336,7 +344,7 @@
             var sectionList = document.getElementById('section-list');
             sectionList.style.display = 'none';
           },
-          animateSectionList: function (show) {
+          animate: function (show) {
 
 
             var sectionList = document.getElementById('section-list');
@@ -414,30 +422,77 @@
               window.PabloCamara.Helpers.toggleClassFromChildren(el, targetTagNames, oldClass, newClass);
             }, 100);
 
-
-
           },
+        },
+        LoginBox: {
+          addedTransitionEndListener: false,
+          animate: function (show) {
+            var el = document.getElementById('login-box');
+            el.style.display = 'block';
+            var oldClass = show ? 'start' : 'end';
+            var newClass = !show ? 'start' : 'end';
+            var targetTagNames = ['h2'];
+
+            this.totalTransitionsEnded = 0;
+            if (this.addedTransitionEndListener === false) {
+              window.PabloCamara.Helpers.callbackOnChildrenWithClass(el, targetTagNames, oldClass, function (child) {
+
+                var listener = function (event) {
+                  if (child.classList.contains('start')) {
+                    window.PabloCamara.Components.LoginBox.totalTransitionsEnded++;
+                    // TODO: Grab total transitions dynamically
+                    if (window.PabloCamara.Components.LoginBox.totalTransitionsEnded >= 1) {
+                      el.style.display = 'none';
+                    }
+                  }
+                };
+
+                child.addEventListener('transitionend', listener);
+
+
+              });
+              this.addedTransitionEndListener = true;
+            }
+
+            setTimeout(function () {
+              window.PabloCamara.Helpers.toggleClassFromChildren(el, targetTagNames, oldClass, newClass);
+            }, 100);
+            
+          }
         }
       },
       Views: {
         homePage: function (show) {
-          
-          window.PabloCamara.Components.SectionList.animateSectionList(show);
+          window.PabloCamara.Components.SectionList.animate(show);
         },
         underMaintenance: function (show) {
           window.PabloCamara.Components.UnderMaintenance.animate(show);
+        },
+        login: function(show) {
+          window.PabloCamara.Components.LoginBox.animate(show);
         }
       },
       ViewRouter: {
+        currentRoute: '<?= $route ?>',
+        routeMap: { //TODO: translate route, move into translation files
+            '/': 'homePage',
+            '/login': 'login'
+        },
         visibleView: null,
+        getViewNameFromRoute: function () {
+          if (this.routeMap[this.currentRoute]) {
+            return this.routeMap[this.currentRoute];
+          }
+          return null;
+        },
         hideVisibleView: function () {
-          if (window.PabloCamara.Views.hasOwnProperty(this.visibleView)
+          if (this.visibleView !== null 
+            && window.PabloCamara.Views.hasOwnProperty(this.visibleView)
             && typeof window.PabloCamara.Views[this.visibleView] === 'function') {
             window.PabloCamara.Views[this.visibleView](false);
             this.visibleView = null;
             return;
           }
-          // TODO: View not found 404 alert
         },
         call: function (viewName, viewParam) {
 
@@ -448,7 +503,8 @@
 
           if (window.PabloCamara.Views.hasOwnProperty(viewName)
             && typeof window.PabloCamara.Views[viewName] === 'function') {
-
+              
+            window.PabloCamara.ViewRouter.hideVisibleView();
             window.PabloCamara.ViewRouter.visibleView = viewName;
             window.PabloCamara.Views[viewName](viewParam);
 
@@ -460,14 +516,14 @@
         routeAfterLanguageIsSelected: function (viewName, viewParam) {
 
           if (false === window.PabloCamara.Components.Language.setupLang()) {
-            window.PabloCamara.Components.Language.animateLanguageSelection(true);
+            window.PabloCamara.Components.Language.animate(true);
             return;
           }
           this.call(viewName, viewParam);
         },
         routeWithLanguage: function(lang, viewName, viewParam) {
           if (window.PabloCamara.Components.Language.setupLang(lang)) {
-            window.PabloCamara.Components.Language.animateLanguageSelection(false);
+            window.PabloCamara.Components.Language.animate(false);
             if (false === window.PabloCamara._hasBodyLoaded) {
               document.body.onload = function () {
                 window.PabloCamara._hasBodyLoaded = true;
@@ -578,6 +634,16 @@
 
 
   <div id="loading" style="display: none;"></div>
+
+  <div id="under-maintenance" style="display: none;">
+    <div class="opacity-animation start">
+      <h2 class="dts" data-dts-id="under_maintenance"></h2>
+      <p class="dts" data-dts-id="return_later"></p>
+      <small class="dts" data-dts-id="contact_if_needed"></small>
+    </div>
+  </div>
+
+  
   <script type="text/javascript">
     window.PabloCamara.Components.Header.animateName();
     window.PabloCamara.Components.Loading.start();
@@ -587,7 +653,7 @@
       window.PabloCamara.Components.Loading.end();
 
       if (null === window.PabloCamara.Components.Language.getLang()) {
-        window.PabloCamara.Components.Language.animateLanguageSelection(true);
+        window.PabloCamara.Components.Language.animate(true);
         return;
       }
 
@@ -621,7 +687,7 @@
   <!-- Preloading images: end -->
 
 
-  <div id="language-selector">
+  <div id="language-selector" style="display: none;">
     <div class="language first-item" onClick="window.PabloCamara.ViewRouter.routeWithLanguage('pt','homePage',true)">
       <div class="v-connector load-pt-v-conn start"></div>
       <div class="h-connector load-pt-h-conn start"></div>
@@ -686,13 +752,18 @@
   </script>
   <!-- Preloading images: end -->
 
-
-  <div id="under-maintenance" style="display: none;">
-    <div class="opacity-animation start">
-      <h2 class="dts" data-dts-id="under_maintenance"></h2>
-      <p class="dts" data-dts-id="return_later"></p>
-      <small class="dts" data-dts-id="contact_if_needed"></small>
+  <div id="login-box" style="display: none;">
+    <div class="input">
+        <div class="label">Email:</div>
+        <input type="email" id="login-email">
+        <p id="login-email-feedback" class="field-feedback" style="display: none"></p>
     </div>
+    <div class="input password">
+        <div class="label">Password:</div>
+        <input type="password" id="login-password">
+        <p id="login-password-feedback" class="field-feedback" style="display: none"></p>
+    </div>
+    <div class="button">Login</div>
   </div>
 
   <div id="section-list" style="display: none">
@@ -736,7 +807,8 @@
       window.PabloCamara.Components.Loading.end();
 
       if (false === window.PabloCamara.isUnderMaintenance) {
-        window.PabloCamara.ViewRouter.routeAfterLanguageIsSelected('homePage', true);
+        const currentViewName = window.PabloCamara.ViewRouter.getViewNameFromRoute();
+        window.PabloCamara.ViewRouter.routeAfterLanguageIsSelected(currentViewName, true);
       }
     };
   </script>

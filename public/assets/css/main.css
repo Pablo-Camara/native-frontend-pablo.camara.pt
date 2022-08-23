@@ -1104,6 +1104,47 @@ body {
   transition-delay: 4s;
   opacity: 1;
 }
+#login-box {
+  text-align: center;
+  max-width: 300px;
+  margin: auto;
+  color: #00202c;
+  padding-top: 24px;
+}
+#login-box .input {
+  text-align: left;
+}
+#login-box .input .label {
+  font-size: 16px;
+}
+#login-box .input input[type="email"],
+#login-box .input input[type="password"] {
+  height: 30px;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 5px;
+  font-size: 14px;
+  padding-left: 8px;
+}
+#login-box .input.password {
+  margin-top: 14px;
+}
+#login-box .input p.field-feedback {
+  margin: 4px 0;
+  font-size: 13px;
+  color: red;
+}
+#login-box div.button {
+  color: white;
+  background-color: #00202c;
+  padding: 14px 0;
+  margin-top: 14px;
+  cursor: hand;
+  cursor: pointer;
+}
+#login-box div.button:hover {
+  background-color: #00374c;
+}
 #section-list {
   width: 310px;
   margin: auto;
