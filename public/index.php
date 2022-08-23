@@ -94,7 +94,7 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
   <link rel="preload" href="assets/json/translations_en.json" as="fetch" type="application/json" crossorigin />
   <link rel="preload" href="assets/json/translations_es.json" as="fetch" type="application/json" crossorigin />
   <link rel="preload" href="assets/json/translations_pt.json" as="fetch" type="application/json" crossorigin />
-  <link rel="stylesheet" href="assets/css/main.css?v=0.0.0006" />
+  <link rel="stylesheet" href="assets/css/main.css?v=0.0.0007" />
 
   <script type="text/javascript">
 
@@ -754,16 +754,16 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
 
   <div id="login-box" style="display: none;">
     <div class="input">
-        <div class="label">Email:</div>
+        <div class="label dts" data-dts-id="email"></div>
         <input type="email" id="login-email">
         <p id="login-email-feedback" class="field-feedback" style="display: none"></p>
     </div>
     <div class="input password">
-        <div class="label">Password:</div>
+        <div class="label dts" data-dts-id="password"></div>
         <input type="password" id="login-password">
         <p id="login-password-feedback" class="field-feedback" style="display: none"></p>
     </div>
-    <div class="button">Login</div>
+    <div class="button dts" data-dts-id="login"></div>
   </div>
 
   <div id="section-list" style="display: none">

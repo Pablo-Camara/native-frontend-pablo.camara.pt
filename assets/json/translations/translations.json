@@ -43,5 +43,20 @@
         "pt": "Contate-me",
         "en": "Contact me",
         "es": "Contáctame"
+    },
+    "password": {
+        "pt": "Palavra-passe:",
+        "en": "Password:",
+        "es": "Contraseña:"
+    },
+    "email": {
+        "pt": "E-mail:",
+        "en": "E-mail address:",
+        "es": "Correo electrónico:"
+    },
+    "login": {
+        "pt": "Entrar",
+        "en": "Login",
+        "es": "Iniciar sesión"
     }
 }
