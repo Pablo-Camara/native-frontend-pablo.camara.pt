@@ -58,5 +58,15 @@
         "pt": "Entrar",
         "en": "Login",
         "es": "Iniciar sesión"
+    },
+    "invalid-email": {
+        "pt": "Endereço de email invalido",
+        "en": "Invalid email address",
+        "es": "Correo electrónico inválido"
+    },
+    "empty-password-error": {
+        "pt": "Digite a sua password",
+        "en": "Password cannot be empty",
+        "es": "La contraseña no puede estar vacía"
     }
 }

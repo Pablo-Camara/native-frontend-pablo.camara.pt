@@ -253,6 +253,16 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
             });
           },
 
+          getTranslatedString: function (stringId) {
+            if (
+              window.PabloCamara.Components.Language.translationStrings[stringId]
+            ) {
+              return window.PabloCamara.Components.Language.translationStrings[stringId];
+            }
+
+            return '';
+          },
+
           setLanguageTogglerCurrentFlag: function () {
             var toggleFlag = document.getElementById('language-toggle-flag');
 
@@ -421,6 +431,42 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
               window.PabloCamara.Helpers.toggleClassFromChildren(el, targetTagNames, oldClass, newClass);
             }, 100);
             
+          },
+          validateEmail: function (email) {
+            return String(email)
+              .toLowerCase()
+              .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+              );
+          },
+          submit: function () {
+            const emailEl = document.getElementById('login-email');
+            const emailFeedbackEl = document.getElementById('login-email-feedback');
+
+            const passwordEl = document.getElementById('login-password');
+            const passwordFeedbackEl = document.getElementById('login-password-feedback');
+
+            if (!this.validateEmail(emailEl.value)) {
+              emailFeedbackEl.style.display = 'block';
+              const invalidEmailString = window.PabloCamara.Components.Language.getTranslatedString('invalid-email');
+              emailFeedbackEl.innerText = invalidEmailString;
+              return;
+            } else {
+              emailFeedbackEl.style.display = 'none';
+              emailFeedbackEl.innerText = '';
+            }
+
+            if (passwordEl.value.length === 0) {
+              passwordFeedbackEl.style.display = 'block';
+              const emptyPasswordString = window.PabloCamara.Components.Language.getTranslatedString('empty-password-error');
+              passwordFeedbackEl.innerText = emptyPasswordString;
+              return;
+            } else {
+              passwordFeedbackEl.style.display = 'none';
+              passwordFeedbackEl.innerText = '';
+            }
+
+
           }
         }
       },
@@ -717,7 +763,8 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
         <input type="password" id="login-password">
         <p id="login-password-feedback" class="field-feedback" style="display: none"></p>
     </div>
-    <div class="button dts" data-dts-id="login"></div>
+    <div class="button dts" data-dts-id="login"
+      onclick="window.PabloCamara.Components.LoginBox.submit();"></div>
   </div>
 
   <script type="text/javascript">
