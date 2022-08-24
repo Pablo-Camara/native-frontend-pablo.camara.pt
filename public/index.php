@@ -260,7 +260,8 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
               toggleFlag.setAttribute('src', 'assets/img/flags/flag-' + window.PabloCamara.Components.Language.currentLanguage + '.png');
               toggleFlag.onclick = function () {
                 window.PabloCamara.ViewRouter.hideVisibleView();
-                window.PabloCamara.Components.Language.animate(true);
+                const currentViewName = window.PabloCamara.ViewRouter.getViewNameFromRoute();
+                window.PabloCamara.Components.Language.animate(true, currentViewName, true);
               };
             }
           },
@@ -274,7 +275,7 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
             this.translateStrings();
           },
 
-          animate: function (show) {
+          animate: function (show, viewName, viewParam) {
 
             var languageSelector = document.getElementById('language-selector');
             languageSelector.style.display = 'block';
@@ -285,16 +286,25 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
             this.totalTransitionsEnded = 0;
             if (this.addedTransitionEndListener === false) {
               window.PabloCamara.Helpers.callbackOnChildrenWithClass(languageSelector, targetTagNames, oldClass, function (child) {
-
                 var listener = function (event) {
                   if (child.classList.contains('start')) {
                     window.PabloCamara.Components.Language.totalTransitionsEnded++;
                     // TODO: Grab total transitions dynamically
                     if (window.PabloCamara.Components.Language.totalTransitionsEnded >= 25) {
                       languageSelector.style.display = 'none';
+
                       if (false === window.PabloCamara._hasBodyLoaded) {
                         window.PabloCamara.Components.Loading.start();
+
+                        document.body.onload = function () {
+                          window.PabloCamara._hasBodyLoaded = true;
+                          window.PabloCamara.Components.Loading.end();
+                          window.PabloCamara.ViewRouter.call(viewName, viewParam);
+                        };
+                        return;
                       }
+                      
+                      window.PabloCamara.ViewRouter.call(viewName, viewParam);
                     }
                   }
 
@@ -331,10 +341,12 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
           }
         },
         Header: {
-          animateName: function () {
+          animateName: function (show) {
             setTimeout(function () {
               var pabloCamara = document.getElementById('pablocamara');
-              window.PabloCamara.Helpers.toggleClassFromChildren(pabloCamara, ['div'], 'start', 'end');
+              var oldClass = show ? 'start' : 'end';
+              var newClass = show ? 'end' : 'start';
+              window.PabloCamara.Helpers.toggleClassFromChildren(pabloCamara, ['div'], oldClass, newClass);
             }, 100);
           }
         },
@@ -465,29 +477,16 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
           // TODO: View not found 404 alert
         },
         routeAfterLanguageIsSelected: function (viewName, viewParam) {
-
           if (false === window.PabloCamara.Components.Language.setupLang()) {
-            window.PabloCamara.Components.Language.animate(true);
+            window.PabloCamara.Components.Language.animate(true, viewName, viewParam);
             return;
           }
           this.call(viewName, viewParam);
         },
-        routeWithLanguage: function(lang, viewName, viewParam) {
+        routeWithLanguage: function(lang) {
           if (window.PabloCamara.Components.Language.setupLang(lang)) {
             window.PabloCamara.Components.Language.animate(false);
-            if (false === window.PabloCamara._hasBodyLoaded) {
-              document.body.onload = function () {
-                window.PabloCamara._hasBodyLoaded = true;
-                window.PabloCamara.Components.Loading.end();
-                window.PabloCamara.ViewRouter.call(viewName, viewParam);
-              };
-              return;
-            }
-            if (window.PabloCamara.Components.Language.setupLang(lang)) {
-              window.PabloCamara.ViewRouter.call(viewName, viewParam);
-            }
           }
-
         },
       }
     };
@@ -596,7 +595,7 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
 
   
   <script type="text/javascript">
-    window.PabloCamara.Components.Header.animateName();
+    window.PabloCamara.Components.Header.animateName(true);
     window.PabloCamara.Components.Loading.start();
 
     
@@ -604,7 +603,9 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
       window.PabloCamara.Components.Loading.end();
 
       if (null === window.PabloCamara.Components.Language.getLang()) {
-        window.PabloCamara.Components.Language.animate(true);
+        const viewName = window.PabloCamara.ViewRouter.getViewNameFromRoute();
+        const viewParam = true;
+        window.PabloCamara.Components.Language.animate(true, viewName, viewParam);
         return;
       }
 
@@ -639,7 +640,7 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
 
 
   <div id="language-selector" style="display: none;">
-    <div class="language first-item" onClick="window.PabloCamara.ViewRouter.routeWithLanguage('pt','homePage',true)">
+    <div class="language first-item" onClick="window.PabloCamara.ViewRouter.routeWithLanguage('pt')">
       <div class="v-connector load-pt-v-conn start"></div>
       <div class="h-connector load-pt-h-conn start"></div>
       <div class="content load-pt-content start">
@@ -648,7 +649,7 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
       </div>
     </div>
 
-    <div class="language second-item" onClick="window.PabloCamara.ViewRouter.routeWithLanguage('en','homePage',true)">
+    <div class="language second-item" onClick="window.PabloCamara.ViewRouter.routeWithLanguage('en')">
       <div class="v-connector load-en-v-conn start"></div>
       <div class="h-connector load-en-h-conn start"></div>
       <div class="content load-en-content start">
@@ -658,7 +659,7 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
     </div>
 
 
-    <div class="language third-item" onClick="window.PabloCamara.ViewRouter.routeWithLanguage('es','homePage',true)">
+    <div class="language third-item" onClick="window.PabloCamara.ViewRouter.routeWithLanguage('es')">
       <div class="v-connector load-es-v-conn start"></div>
       <div class="h-connector load-es-h-conn start"></div>
       <div class="content load-es-content start">
@@ -680,13 +681,14 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
   <!-- Preloading images: start -->
   <div
     style="width:1px; height:1px; visibility:hidden; overflow:hidden; position: absolute; top: -100px; left: -100px;">
-
+<!--
     <img id="preload-img-4" src="#" data-src="assets/img/section-items/biography.png" />
     <img id="preload-img-5" src="#" data-src="assets/img/section-items/projects.png" />
     <img id="preload-img-6" src="#" data-src="assets/img/section-items/services.png" />
     <img id="preload-img-7" src="#" data-src="assets/img/section-items/blog.png" />
     <img id="preload-img-8" src="#" data-src="assets/img/section-items/portal.png" />
     <img id="preload-img-9" src="#" data-src="assets/img/section-items/contactme.png" />
+-->
   </div>
 
   <script type="text/javascript">
@@ -694,7 +696,8 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
       if (true === window.PabloCamara.isUnderMaintenance) {
         return;
       }
-
+      // not yet preloading images because not yet necessary
+      return;
       for (var pic = 4; pic <= 9; pic++) {
         var elId = 'preload-img-' + pic;
         document.getElementById(elId).src = document.getElementById(elId).getAttribute('data-src');
