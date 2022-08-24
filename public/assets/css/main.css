@@ -1145,62 +1145,6 @@ body {
 #login-box div.button:hover {
   background-color: #00374c;
 }
-#section-list {
-  width: 310px;
-  margin: auto;
-  margin-top: 32px;
-}
-#section-list .section-item {
-  cursor: hand;
-  cursor: pointer;
-  background: #00202b;
-  width: 100px;
-  display: inline-block;
-  margin: auto;
-  margin-bottom: 10px;
-  transition: opacity 1.4s;
-  transition-timing-function: ease-out;
-}
-#section-list .section-item.start {
-  opacity: 0;
-  transition-delay: 1.5s;
-}
-#section-list .section-item.end {
-  transition-delay: 1.2s;
-  opacity: 1;
-}
-#section-list .section-item .image {
-  width: 50px;
-  margin: auto;
-  padding-top: 20px;
-}
-#section-list .section-item .image img {
-  transition: opacity 2s;
-  width: 50px;
-}
-#section-list .section-item .image img.start {
-  opacity: 0;
-}
-#section-list .section-item .image img.end {
-  transition-delay: 2s;
-  opacity: 1;
-}
-#section-list .section-item .name {
-  color: #fff;
-  font-size: 16px;
-  text-align: center;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-#section-list .section-item .name.start {
-  opacity: 0;
-  transition: opacity 1s;
-}
-#section-list .section-item .name.end {
-  opacity: 1;
-  transition: opacity 2s;
-  transition-delay: 3s;
-}
 .opacity-animation {
   transition: opacity 2.3s;
 }

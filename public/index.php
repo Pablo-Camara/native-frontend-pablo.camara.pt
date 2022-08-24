@@ -94,7 +94,7 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
   <link rel="preload" href="assets/json/translations_en.json" as="fetch" type="application/json" crossorigin />
   <link rel="preload" href="assets/json/translations_es.json" as="fetch" type="application/json" crossorigin />
   <link rel="preload" href="assets/json/translations_pt.json" as="fetch" type="application/json" crossorigin />
-  <link rel="stylesheet" href="assets/css/main.css?v=0.0.0007" />
+  <link rel="stylesheet" href="assets/css/main.css?v=0.0.0008" />
 
   <script type="text/javascript">
 
@@ -338,55 +338,6 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
             }, 100);
           }
         },
-        SectionList: {
-          addedTransitionEndListener: false,
-          hide: function () {
-            var sectionList = document.getElementById('section-list');
-            sectionList.style.display = 'none';
-          },
-          animate: function (show) {
-
-
-            var sectionList = document.getElementById('section-list');
-            sectionList.style.display = 'block';
-            var targetTagNames = ['div', 'img'];
-
-            var oldClass = show ? 'start' : 'end';
-            var newClass = !show ? 'start' : 'end';
-
-            this.totalTransitionsEnded = 0;
-            if (this.addedTransitionEndListener === false) {
-              window.PabloCamara.Helpers.callbackOnChildrenWithClass(sectionList, targetTagNames, oldClass, function (child) {
-
-                var listener = function (event) {
-                  if (child.classList.contains('start')) {
-                    window.PabloCamara.Components.SectionList.totalTransitionsEnded++;
-                    if (window.PabloCamara.Components.SectionList.totalTransitionsEnded >= 24) {
-                      sectionList.style.display = 'none';
-                    }
-                    //console.log(window.PabloCamara.Components.SectionList.totalTransitionsEnded);
-                  }
-
-
-                };
-
-                child.addEventListener('transitionend', listener);
-
-
-              });
-              this.addedTransitionEndListener = true;
-            }
-
-
-            setTimeout(function () {
-              window.PabloCamara.Helpers.toggleClassFromChildren(sectionList, targetTagNames, oldClass, newClass);
-            }, 100);
-
-
-
-          }
-
-        },
         UnderMaintenance: {
           addedTransitionEndListener: false,
           animate: function (show) {
@@ -463,7 +414,7 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
       },
       Views: {
         homePage: function (show) {
-          window.PabloCamara.Components.SectionList.animate(show);
+          
         },
         underMaintenance: function (show) {
           window.PabloCamara.Components.UnderMaintenance.animate(show);
@@ -764,40 +715,6 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
         <p id="login-password-feedback" class="field-feedback" style="display: none"></p>
     </div>
     <div class="button dts" data-dts-id="login"></div>
-  </div>
-
-  <div id="section-list" style="display: none">
-    <div class="section-item start">
-      <div class="image"><img class="start" src="assets/img/section-items/biography.png" /></div>
-      <div class="name start dts" data-dts-id="biography"></div>
-    </div>
-
-    <div class="section-item start">
-      <div class="image"><img class="start" src="assets/img/section-items/projects.png" /></div>
-      <div class="name start dts" data-dts-id="projects"></div>
-    </div>
-
-    <div class="section-item start">
-      <div class="image"><img class="start" src="assets/img/section-items/services.png" /></div>
-      <div class="name start dts" data-dts-id="services"></div>
-    </div>
-
-    <div class="section-item start">
-      <div class="image"><img class="start" src="assets/img/section-items/blog.png"></div>
-      <div class="name start dts" data-dts-id="blog"></div>
-    </div>
-
-    <div class="section-item start">
-      <div class="image"><img class="start" src="assets/img/section-items/portal.png">
-      </div>
-      <div class="name start dts" data-dts-id="web_portal"></div>
-    </div>
-
-    <div class="section-item start">
-      <div class="image"><img class="start" src="assets/img/section-items/contactme.png"></div>
-      <div class="name start dts" data-dts-id="contact_me"></div>
-    </div>
-  </div>
   </div>
 
   <script type="text/javascript">
