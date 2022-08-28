@@ -94,7 +94,7 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
   <link rel="preload" href="assets/json/translations_en.json" as="fetch" type="application/json" crossorigin />
   <link rel="preload" href="assets/json/translations_es.json" as="fetch" type="application/json" crossorigin />
   <link rel="preload" href="assets/json/translations_pt.json" as="fetch" type="application/json" crossorigin />
-  <link rel="stylesheet" href="assets/css/main.css?v=0.0.0009" />
+  <link rel="stylesheet" href="assets/css/main.css?v=0.0.0010" />
 
   <script type="text/javascript">
 
@@ -503,8 +503,11 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
           },
         },
         LoginBox: {
+          hasInitialized: false,
           addedTransitionEndListener: false,
           animate: function (show) {
+            this.initialize();
+            
             var el = document.getElementById('login-box');
             el.style.display = 'block';
             var oldClass = show ? 'start' : 'end';
@@ -545,6 +548,11 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
               );
           },
           submit: function (loginButton) {
+
+            if (!window._authManager.isAuthenticated) {
+              return false;
+            }
+
             const emailEl = document.getElementById('login-email');
             const emailFeedbackEl = document.getElementById('login-email-feedback');
 
@@ -597,6 +605,17 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
 
             window._authManager.login(email, password);
 
+          },
+          initialize: function () {
+            if (false === this.hasInitialized) {
+              const loginButton = document.getElementById('login-box-login-button');
+             
+              document.addEventListener('userAuthenticated', (e) => {
+                loginButton.classList.remove('disabled');
+              }, false);
+
+              this.hasInitialized = true;
+            }
           }
         }
       },
@@ -894,7 +913,7 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
         <p id="login-password-feedback" class="field-feedback" style="display: none"></p>
     </div>
     <p id="login-box-feedback" class="login-box-feedback" style="display: none"></p>
-    <div class="button dts" data-dts-id="login"
+    <div id="login-box-login-button" class="button disabled dts" data-dts-id="login"
       onclick="window.PabloCamara.Components.LoginBox.submit(this);"></div>
   </div>
 

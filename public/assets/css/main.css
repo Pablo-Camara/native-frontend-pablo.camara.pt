@@ -1145,6 +1145,10 @@ body {
 #login-box div.button:hover {
   background-color: #00374c;
 }
+#login-box div.button.disabled {
+  background-color: #a6a6a6;
+  cursor: not-allowed;
+}
 #login-box .login-box-feedback.error {
   color: red;
 }
