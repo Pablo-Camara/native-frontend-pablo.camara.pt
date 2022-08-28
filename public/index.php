@@ -110,6 +110,86 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
         return this;
     }
 
+    window._authManager = {
+      at: null,
+
+      isAuthenticated: false,
+      isLoggedIn: false,
+
+      api: {
+        url: 'https://auth.camara.pt.local/api',
+        endpoints: {
+          authentication: '/authenticate',
+          login: '/login'
+        },
+      },
+
+      customEvents: {
+        userAuthenticatedEvent: null,
+        userLoggedInEvent: null
+      },
+
+      initialize: function () {
+        this.customEvents.userAuthenticatedEvent = document.createEvent('Event');
+        this.customEvents.userAuthenticatedEvent.initEvent('userAuthenticated', true, true);
+
+        this.customEvents.userLoggedInEvent = document.createEvent('Event');
+        this.customEvents.userLoggedInEvent.initEvent('userLoggedIn', true, true);
+
+        this.authenticate();
+      },
+      
+      
+      authenticate: function () {
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function() {
+          if(this.status === 200 && this.readyState === 4) {
+            const resObj = JSON.parse(this.response);
+            window._authManager.at = resObj.at;
+            window._authManager.isAuthenticated = true;
+            window._authManager.isLoggedIn = resObj.guest ? false : true;
+
+            // trigger userAuthenticated event
+            document.dispatchEvent(window._authManager.customEvents.userAuthenticatedEvent);
+          }
+        });
+
+        xhr.open("POST", this.api.url + this.api.endpoints.authentication);
+        xhr.send();
+      },
+      
+      login: function (email, password) {
+
+        if(this.isAuthenticated !== true) {
+          // must authenticate as guest first
+          return;
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function() {
+          if(this.status === 200 && this.readyState === 4) {
+            const resObj = JSON.parse(this.response);
+            window._authManager.at = resObj.at;
+            window._authManager.isLoggedIn = resObj.guest ? false : true;
+
+            // trigger userLoggedIn event
+            document.dispatchEvent(window._authManager.customEvents.userLoggedInEvent);
+          }
+        });
+
+        const credentialsQueryStr = "?email=" + email + "&password=" + password;
+        xhr.open("POST", this.api.url + this.api.endpoints.login + credentialsQueryStr);
+        xhr.setRequestHeader("Authorization", "Bearer " + this.at);
+        xhr.send();
+      }
+    };
+
+    window._authManager.initialize();
+
     window.PabloCamara = {
       isUnderMaintenance: false,
       _hasBodyLoaded: false,
@@ -439,7 +519,7 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
               );
           },
-          submit: function () {
+          submit: function (loginButton) {
             const emailEl = document.getElementById('login-email');
             const emailFeedbackEl = document.getElementById('login-email-feedback');
 
@@ -466,6 +546,15 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
               passwordFeedbackEl.innerText = '';
             }
 
+            const email = emailEl.value;
+            const password = passwordEl.value;
+
+            loginButton.innerText = 'Checking credentials..';
+            document.addEventListener('userLoggedIn', (e) => {
+              loginButton.innerText = 'Logged in!';
+            }, false);
+
+            window._authManager.login(email, password);
 
           }
         }
@@ -764,7 +853,7 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
         <p id="login-password-feedback" class="field-feedback" style="display: none"></p>
     </div>
     <div class="button dts" data-dts-id="login"
-      onclick="window.PabloCamara.Components.LoginBox.submit();"></div>
+      onclick="window.PabloCamara.Components.LoginBox.submit(this);"></div>
   </div>
 
   <script type="text/javascript">
