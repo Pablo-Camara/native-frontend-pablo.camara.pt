@@ -1145,6 +1145,12 @@ body {
 #login-box div.button:hover {
   background-color: #00374c;
 }
+#login-box .login-box-feedback.error {
+  color: red;
+}
+#login-box .login-box-feedback.info {
+  color: gray;
+}
 .opacity-animation {
   transition: opacity 2.3s;
 }

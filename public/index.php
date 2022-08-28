@@ -94,7 +94,7 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
   <link rel="preload" href="assets/json/translations_en.json" as="fetch" type="application/json" crossorigin />
   <link rel="preload" href="assets/json/translations_es.json" as="fetch" type="application/json" crossorigin />
   <link rel="preload" href="assets/json/translations_pt.json" as="fetch" type="application/json" crossorigin />
-  <link rel="stylesheet" href="assets/css/main.css?v=0.0.0008" />
+  <link rel="stylesheet" href="assets/css/main.css?v=0.0.0009" />
 
   <script type="text/javascript">
 
@@ -126,7 +126,8 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
 
       customEvents: {
         userAuthenticatedEvent: null,
-        userLoggedInEvent: null
+        userLoggedInEvent: null,
+        userLoginFailed: null
       },
 
       initialize: function () {
@@ -136,6 +137,10 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
         this.customEvents.userLoggedInEvent = document.createEvent('Event');
         this.customEvents.userLoggedInEvent.initEvent('userLoggedIn', true, true);
 
+        this.customEvents.userLoginFailedEvent = document.createEvent('Event');
+        this.customEvents.userLoginFailedEvent.initEvent(
+          'userLoginFailed', true, true);
+        
         this.authenticate();
       },
       
@@ -171,14 +176,34 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
         xhr.withCredentials = true;
 
         xhr.addEventListener("readystatechange", function() {
-          if(this.status === 200 && this.readyState === 4) {
-            const resObj = JSON.parse(this.response);
-            window._authManager.at = resObj.at;
-            window._authManager.isLoggedIn = resObj.guest ? false : true;
+          if (this.readyState === 4) {
 
-            // trigger userLoggedIn event
-            document.dispatchEvent(window._authManager.customEvents.userLoggedInEvent);
+            const resObj = JSON.parse(this.response); //TODO: Catch exception
+
+            if (this.status === 200) {
+              window._authManager.at = resObj.at;
+              window._authManager.isLoggedIn = resObj.guest ? false : true;
+
+              // trigger userLoggedIn event
+              document.dispatchEvent(window._authManager.customEvents.userLoggedInEvent);
+            }
+
+            if (this.status === 401) {
+              
+              if(resObj.error_id === 'incorrect_credentials') {
+                // trigger userLoginFailed event
+                window._authManager.customEvents.userLoginFailedEvent.reason = resObj.message;
+                window._authManager.customEvents.userLoginFailedEvent.isError = true;
+                document.dispatchEvent(
+                  window._authManager.customEvents.userLoginFailedEvent
+                );
+              }
+              
+            }
+
+
           }
+          
         });
 
         const credentialsQueryStr = "?email=" + email + "&password=" + password;
@@ -526,6 +551,8 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
             const passwordEl = document.getElementById('login-password');
             const passwordFeedbackEl = document.getElementById('login-password-feedback');
 
+            const loginBoxFeedbackEl = document.getElementById('login-box-feedback');
+
             if (!this.validateEmail(emailEl.value)) {
               emailFeedbackEl.style.display = 'block';
               const invalidEmailString = window.PabloCamara.Components.Language.getTranslatedString('invalid-email');
@@ -549,9 +576,23 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
             const email = emailEl.value;
             const password = passwordEl.value;
 
+            const loginButtonText = window.PabloCamara.Components.Language.getTranslatedString('login');
+            //TODO: translate
             loginButton.innerText = 'Checking credentials..';
             document.addEventListener('userLoggedIn', (e) => {
+              loginBoxFeedbackEl.innerText = '';
+              loginBoxFeedbackEl.style.display = 'none';
               loginButton.innerText = 'Logged in!';
+            }, false);
+
+            document.addEventListener('userLoginFailed', (e) => {
+              loginBoxFeedbackEl.innerText = e.reason;
+              loginBoxFeedbackEl.style.display = 'block';
+
+              if (e.isError) {
+                loginBoxFeedbackEl.classList.add('error');
+                loginButton.innerText = loginButtonText;
+              }
             }, false);
 
             window._authManager.login(email, password);
@@ -852,6 +893,7 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
         <input type="password" id="login-password">
         <p id="login-password-feedback" class="field-feedback" style="display: none"></p>
     </div>
+    <p id="login-box-feedback" class="login-box-feedback" style="display: none"></p>
     <div class="button dts" data-dts-id="login"
       onclick="window.PabloCamara.Components.LoginBox.submit(this);"></div>
   </div>
