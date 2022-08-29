@@ -1,4 +1,14 @@
 <?php
+require_once '../vendor/autoload.php';
+$dotenv = new Symfony\Component\Dotenv\Dotenv();
+$dotenv->load('../.env');
+
+
+$authServerApiUrl = $_ENV['AUTH_SERVER_API_URL'];
+
+if (!$authServerApiUrl) {
+  die('Auth Server Api Url environment variable is not set.');
+}
 
 $requestUri = $_SERVER['REQUEST_URI'];
 
@@ -142,7 +152,7 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
       isLoggedIn: false,
 
       api: {
-        url: 'https://auth.camara.pt.local/api',
+        url: '<?= $authServerApiUrl ?>',
         endpoints: {
           authentication: '/authenticate',
           login: '/login'
