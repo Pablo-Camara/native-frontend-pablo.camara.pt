@@ -663,7 +663,7 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
       ViewRouter: {
         currentRoute: '<?= $route ?>',
         routeMap: { //TODO: translate route, move into translation files
-            '/': 'homePage',
+            '/': 'login', //'homePage',
             '/login': 'login'
         },
         visibleView: null,
