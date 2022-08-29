@@ -110,6 +110,31 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
         return this;
     }
 
+    window._cookieHelper = {
+       setCookie: function (name,value,days) {
+          var expires = "";
+          if (days) {
+              var date = new Date();
+              date.setTime(date.getTime() + (days*24*60*60*1000));
+              expires = "; expires=" + date.toUTCString();
+          }
+          document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+      },
+      getCookie: function (name) {
+          var nameEQ = name + "=";
+          var ca = document.cookie.split(';');
+          for(var i=0;i < ca.length;i++) {
+              var c = ca[i];
+              while (c.charAt(0)==' ') c = c.substring(1,c.length);
+              if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+          }
+          return null;
+      },
+      eraseCookie: function (name) {   
+          document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      }
+    };
+
     window._authManager = {
       at: null,
 
@@ -318,7 +343,7 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
           },
           getLang: function () {
             if (null === this.currentLanguage) {
-              this.currentLanguage = localStorage.getItem('lang');
+              this.currentLanguage = window._cookieHelper.getCookie('lang');
             }
             //TODO: If currentLanguage still === null, attempt fetching from session
             return this.currentLanguage;
@@ -383,8 +408,7 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
 
           setLang: function (lang) {
             this.currentLanguage = lang;
-            //TODO: Use cookie instead.
-            localStorage.setItem('lang', lang);
+            window._cookieHelper.setCookie('lang', lang, 1);
             this.setLanguageTogglerCurrentFlag();
             //TODO: Save language in session AND/OR database
             this.translateStrings();
@@ -585,12 +609,15 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
             const password = passwordEl.value;
 
             const loginButtonText = window.PabloCamara.Components.Language.getTranslatedString('login');
+            const loggingInButtonText = window.PabloCamara.Components.Language.getTranslatedString('checking-credentials');
+            const loggedInButtonText = window.PabloCamara.Components.Language.getTranslatedString('logged-in-btn-text');
+
             //TODO: translate
-            loginButton.innerText = 'Checking credentials..';
+            loginButton.innerText = loggingInButtonText;
             document.addEventListener('userLoggedIn', (e) => {
               loginBoxFeedbackEl.innerText = '';
               loginBoxFeedbackEl.style.display = 'none';
-              loginButton.innerText = 'Logged in!';
+              loginButton.innerText = loggedInButtonText;
             }, false);
 
             document.addEventListener('userLoginFailed', (e) => {
@@ -607,14 +634,17 @@ $route = htmlspecialchars($uriParts[0], ENT_QUOTES, 'UTF-8');
 
           },
           initialize: function () {
+            const loginButton = document.getElementById('login-box-login-button');
+
             if (false === this.hasInitialized) {
-              const loginButton = document.getElementById('login-box-login-button');
-             
               document.addEventListener('userAuthenticated', (e) => {
                 loginButton.classList.remove('disabled');
               }, false);
 
               this.hasInitialized = true;
+            }
+            if (window._authManager.isAuthenticated) {
+              loginButton.classList.remove('disabled');
             }
           }
         }

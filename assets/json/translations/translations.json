@@ -68,5 +68,15 @@
         "pt": "Digite a sua password",
         "en": "Password cannot be empty",
         "es": "La contraseña no puede estar vacía"
+    },
+    "checking-credentials": {
+        "pt": "Verificando credenciais..",
+        "en": "Checking credentials..",
+        "es": "Comprobando credenciales.."
+    },
+    "logged-in-btn-text": {
+        "pt": "Conectado!",
+        "en": "Logged in!",
+        "es": "¡Conectado!"
     }
 }
