@@ -78,5 +78,10 @@
         "pt": "Conectado!",
         "en": "Logged in!",
         "es": "¡Conectado!"
+    },
+    "last-ig-post": {
+        "pt": "Pablo decidiu compartilhar uma de suas últimas postagens do instagram com você:",
+        "en": "Pablo decided to share one of his last instagram posts with you:",
+        "es": "Pablo decidió compartir contigo una de sus últimas publicaciones de instagram:"
     }
 }
