@@ -675,7 +675,7 @@ header("Last-Modified: Sun, 04 Sep 2022 18:30:05 UTC");
       ViewRouter: {
         currentRoute: '<?= $route ?>',
         routeMap: { //TODO: translate route, move into translation files
-            '/': 'homePage', //'homePage',
+            '/': 'login', //'homePage',
             '/login': 'login'
         },
         visibleView: null,
